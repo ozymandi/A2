@@ -62,6 +62,19 @@ export function ComponentNode({ id, data }: { id: string, data: any }) {
           className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1 text-sm text-gray-200 resize-y min-h-[40px] max-w-[250px]"
           onChange={(e) => updateNodeData(id, { value: e.target.value })}
         />
+        <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-800">
+          <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Weight</span>
+          <input 
+            type="range" 
+            min="0.1" max="2.0" step="0.1" 
+            value={data.weight ?? 1.0} 
+            onChange={(e) => updateNodeData(id, { weight: parseFloat(e.target.value) })}
+            className="flex-1 h-1 bg-indigo-500/50 rounded-lg appearance-none cursor-pointer"
+          />
+          <span className="text-[10px] text-gray-400 font-mono w-6 text-right">
+            {Number(data.weight ?? 1.0).toFixed(1)}
+          </span>
+        </div>
       </div>
       <Handle type="source" position={Position.Right} />
     </div>

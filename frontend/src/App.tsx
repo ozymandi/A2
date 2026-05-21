@@ -92,7 +92,12 @@ export default function App() {
        const node = nodes.find(n => n.id === curr);
        if (node && node.type === 'component') {
           if (node.data?.value) {
-             order.push(node.data.value);
+             const weight = node.data?.weight ?? 1.0;
+             if (weight !== 1.0) {
+                 order.push(`(${node.data.value}:${weight.toFixed(1)})`);
+             } else {
+                 order.push(node.data.value);
+             }
           }
        }
        
