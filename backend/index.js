@@ -62,6 +62,36 @@ app.post('/api/refine', async (req, res) => {
     }
 });
 
+app.post('/api/review', async (req, res) => {
+    const { prompt } = req.body;
+    try {
+        const response = await fetch("http://localhost:1234/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "gemma-4-31b",
+                messages: [
+                    { role: "system", content: "You are a prompt engineering master. Review the following image generation prompt. Improve its structure, flow, and vocabulary to get the most stunning and accurate image from an AI generator like Midjourney or Stable Diffusion. Output ONLY the improved prompt text, with no extra conversational filler." },
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 300
+            })
+        });
+        const data = await response.json();
+        
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+            const refined = data.choices[0].message.content.trim();
+            res.json({ refined });
+        } else {
+            throw new Error("Invalid response from LM Studio");
+        }
+    } catch (e) {
+        console.error("[HTTP] Error reviewing prompt:", e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
 server.listen(HTTP_PORT, () => {
     console.error(`[HTTP] Server listening on port ${HTTP_PORT}`);
 });

@@ -10,6 +10,10 @@ const LIBRARY_PRESETS = [
     items: ['Cinematic Lighting', 'Natural Light', 'Volumetric Lighting', 'Studio Lighting', 'Neon Lights', 'Golden Hour']
   },
   {
+    category: 'Tools',
+    items: ['Custom Node', 'Remark']
+  },
+  {
     category: 'Style & Medium',
     items: ['Cyberpunk', 'Photorealistic', 'Oil Painting', 'Anime', 'Concept Art', 'Unreal Engine 5', 'Watercolor']
   },
@@ -45,7 +49,12 @@ export function Sidebar() {
                 key={itemIdx} 
                 className="library-item"
                 draggable
-                onDragStart={(e) => onDragStart(e, 'component', preset.category.split(' ')[0], item)}
+                onDragStart={(e) => onDragStart(
+                  e, 
+                  'component', 
+                  preset.category === 'Tools' ? item : preset.category.split(' ')[0], 
+                  preset.category === 'Tools' ? '' : item
+                )}
               >
                 {item}
               </div>

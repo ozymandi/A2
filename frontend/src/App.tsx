@@ -77,13 +77,39 @@ export default function App() {
 
   // Re-calculate the final prompt whenever nodes/edges change
   useEffect(() => {
-    const components = nodes.filter(n => n.type === 'component').map(n => n.data?.value).filter(Boolean);
+    // Use BFS to traverse the graph starting from the Input node to collect components in order
+    const getNextNodes = (nodeId: string) => edges.filter(e => e.source === nodeId).map(e => e.target);
+    
+    const visited = new Set<string>();
+    const order: string[] = [];
+    
+    const queue = ['1']; // start from inputNode
+    visited.add('1');
+    
+    while(queue.length > 0) {
+       const curr = queue.shift()!;
+       const node = nodes.find(n => n.id === curr);
+       if (node && node.type === 'component') {
+          if (node.data?.value) {
+             order.push(node.data.value);
+          }
+       }
+       
+       const nextNodes = getNextNodes(curr);
+       for(const next of nextNodes) {
+          if (!visited.has(next)) {
+             visited.add(next);
+             queue.push(next);
+          }
+       }
+    }
+
     const inputText = nodes.find(n => n.type === 'inputNode')?.data?.text || '';
     
     let finalPrompt = inputText;
-    if (components.length > 0) {
+    if (order.length > 0) {
       if (finalPrompt) finalPrompt += ', ';
-      finalPrompt += components.join(', ');
+      finalPrompt += order.join(', ');
     }
 
     setNodes(nds => {
