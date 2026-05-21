@@ -31,6 +31,7 @@ const initialEdges: Edge[] = [];
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
+let globalNodeCounter = 1;
 
 export default function App() {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -67,7 +68,7 @@ export default function App() {
         id: getId(),
         type,
         position,
-        data: { label, value },
+        data: { label, value, number: type === 'component' ? globalNodeCounter++ : undefined },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -159,7 +160,7 @@ export default function App() {
                      id: nodeId,
                      type: 'component',
                      position: { x: currentX, y: currentY },
-                     data: { label: key, value: payload[key] }
+                     data: { label: key, value: payload[key], number: globalNodeCounter++ }
                   });
                   currentY += 120; // stack them vertically
                   
