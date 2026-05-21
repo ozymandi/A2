@@ -5,7 +5,7 @@ import express from "express";
 import { WebSocketServer } from "ws";
 import http from "http";
 import cors from "cors";
-
+import fs from "fs";
 const HTTP_PORT = 3001;
 
 // --- Web/WebSocket Server Setup ---
@@ -100,8 +100,24 @@ app.post('/api/review', async (req, res) => {
     }
 });
 
+
+function logToFile(msg) {
+    fs.appendFileSync('mcp_debug.log', new Date().toISOString() + ': ' + msg + '\n');
+}
+
+process.on('uncaughtException', (err) => {
+    logToFile('UNCAUGHT EXCEPTION: ' + err.stack);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    logToFile('UNHANDLED REJECTION: ' + reason);
+});
+
 server.listen(HTTP_PORT, () => {
     console.error(`[HTTP] Server listening on port ${HTTP_PORT}`);
+    logToFile(`[HTTP] Server successfully listening on port ${HTTP_PORT}`);
+}).on('error', (err) => {
+    logToFile(`[HTTP] Server listen error: ${err.message}`);
 });
 
 // Helper to broadcast to React UI
@@ -154,8 +170,25 @@ async function runMcpServer() {
     const transport = new StdioServerTransport();
     await mcp.connect(transport);
     console.error("[MCP] PromptDecompiler MCP Server running on stdio");
+    
+    // Crucial: Kill the process when LM Studio closes the connection
+    transport.onclose = () => {
+        console.error("[MCP] Connection closed by LM Studio. Exiting to free port 3001.");
+        process.exit(0);
+    };
 }
+
+// Fallback: if stdin closes, exit.
+process.stdin.on('close', () => {
+    console.error("[MCP] stdin closed. Exiting to free port 3001.");
+    process.exit(0);
+});
+process.stdin.on('end', () => {
+    console.error("[MCP] stdin ended. Exiting to free port 3001.");
+    process.exit(0);
+});
 
 runMcpServer().catch(err => {
     console.error("[MCP] Error running server:", err);
+    process.exit(1);
 });
