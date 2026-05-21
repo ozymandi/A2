@@ -50,6 +50,10 @@ app.post('/api/refine', async (req, res) => {
         });
         const data = await response.json();
         
+        if (data.error) {
+            throw new Error(`LM Studio Error: ${data.error.message}`);
+        }
+        
         if (data.choices && data.choices[0] && data.choices[0].message) {
             const refined = data.choices[0].message.content.trim();
             res.json({ refined });
@@ -79,6 +83,10 @@ app.post('/api/review', async (req, res) => {
             })
         });
         const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(`LM Studio Error: ${data.error.message}`);
+        }
         
         if (data.choices && data.choices[0] && data.choices[0].message) {
             const refined = data.choices[0].message.content.trim();

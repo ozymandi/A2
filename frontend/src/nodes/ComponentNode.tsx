@@ -17,8 +17,9 @@ export function ComponentNode({ id, data }: { id: string, data: any }) {
        if (res.data.refined) {
            updateNodeData(id, { value: res.data.refined });
        }
-    } catch (e) {
+    } catch (e: any) {
        console.error("Failed to refine:", e);
+       alert(e.response?.data?.error || "Failed to refine prompt. Make sure LM Studio Local Server is running.");
     } finally {
        setLoading(false);
     }

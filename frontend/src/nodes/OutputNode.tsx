@@ -15,8 +15,9 @@ export function OutputNode({ id, data }: { id: string, data: any }) {
       if (res.data.refined) {
         updateNodeData(id, { prompt: res.data.refined });
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error("Failed to review prompt:", e);
+      alert(e.response?.data?.error || "Failed to review prompt. Make sure LM Studio Local Server is running.");
     } finally {
       setLoading(false);
     }
