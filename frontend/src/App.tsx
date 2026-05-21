@@ -138,7 +138,7 @@ export default function App() {
     let timeout: ReturnType<typeof setTimeout>;
 
     const connect = () => {
-      ws = new WebSocket('ws://localhost:3001');
+      ws = new WebSocket('ws://127.0.0.1:3001');
 
       ws.onopen = () => {
         console.log('Connected to MCP WebSocket');

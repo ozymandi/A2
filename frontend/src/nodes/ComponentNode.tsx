@@ -10,7 +10,7 @@ export function ComponentNode({ id, data }: { id: string, data: any }) {
   const handleRefine = async () => {
     setLoading(true);
     try {
-       const res = await axios.post('http://localhost:3001/api/refine', { 
+       const res = await axios.post('http://127.0.0.1:3001/api/refine', { 
            label: data.label || 'component', 
            value: data.value 
        });

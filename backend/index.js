@@ -26,6 +26,10 @@ wss.on("connection", (ws) => {
         uiClients = uiClients.filter(c => c !== ws);
         console.error(`[WS] Client disconnected. Total clients: ${uiClients.length}`);
     });
+
+    ws.on("error", (err) => {
+        console.error(`[WS] Client error:`, err);
+    });
 });
 
 app.get("/health", (req, res) => {
@@ -102,20 +106,26 @@ app.post('/api/review', async (req, res) => {
 
 
 function logToFile(msg) {
-    fs.appendFileSync('mcp_debug.log', new Date().toISOString() + ': ' + msg + '\n');
+    try {
+        fs.appendFileSync('mcp_debug.log', new Date().toISOString() + ': ' + msg + '\n');
+    } catch (e) {
+        console.error("[MCP] Could not write to log file:", e.message);
+    }
 }
 
 process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION:', err);
     logToFile('UNCAUGHT EXCEPTION: ' + err.stack);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
+    console.error('UNHANDLED REJECTION:', reason);
     logToFile('UNHANDLED REJECTION: ' + reason);
 });
 
-server.listen(HTTP_PORT, () => {
-    console.error(`[HTTP] Server listening on port ${HTTP_PORT}`);
-    logToFile(`[HTTP] Server successfully listening on port ${HTTP_PORT}`);
+server.listen(HTTP_PORT, '127.0.0.1', () => {
+    console.error(`[HTTP] Server listening on 127.0.0.1:${HTTP_PORT}`);
+    logToFile(`[HTTP] Server successfully listening on 127.0.0.1:${HTTP_PORT}`);
 }).on('error', (err) => {
     logToFile(`[HTTP] Server listen error: ${err.message}`);
 });
@@ -172,23 +182,24 @@ async function runMcpServer() {
     console.error("[MCP] PromptDecompiler MCP Server running on stdio");
     
     // Crucial: Kill the process when LM Studio closes the connection
+    // Crucial: Handle when LM Studio closes the connection
     transport.onclose = () => {
-        console.error("[MCP] Connection closed by LM Studio. Exiting to free port 3001.");
-        process.exit(0);
+        console.error("[MCP] Connection closed by LM Studio. Shutting down.");
+        server.close(() => process.exit(0));
     };
 }
 
-// Fallback: if stdin closes, exit.
+// Fallback: if stdin closes, exit gracefully.
 process.stdin.on('close', () => {
-    console.error("[MCP] stdin closed. Exiting to free port 3001.");
-    process.exit(0);
+    console.error("[MCP] stdin closed. Shutting down.");
+    server.close(() => process.exit(0));
 });
 process.stdin.on('end', () => {
-    console.error("[MCP] stdin ended. Exiting to free port 3001.");
-    process.exit(0);
+    console.error("[MCP] stdin ended. Shutting down.");
+    server.close(() => process.exit(0));
 });
 
 runMcpServer().catch(err => {
     console.error("[MCP] Error running server:", err);
-    process.exit(1);
+    server.close(() => process.exit(1));
 });

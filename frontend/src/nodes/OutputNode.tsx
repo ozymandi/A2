@@ -11,7 +11,7 @@ export function OutputNode({ id, data }: { id: string, data: any }) {
     if (!data.prompt) return;
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:3001/api/review', { prompt: data.prompt });
+      const res = await axios.post('http://127.0.0.1:3001/api/review', { prompt: data.prompt });
       if (res.data.refined) {
         updateNodeData(id, { prompt: res.data.refined });
       }

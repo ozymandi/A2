@@ -1,0 +1,9 @@
+2026-05-21T14:03:51.478Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at Server.listen (node:net:2170:7)
+    at file:///e:/Projects/A2/backend/index.js:126:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at async node:internal/modules/esm/loader:639:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+2026-05-21T14:08:12.413Z: [HTTP] Server successfully listening on port 3001
