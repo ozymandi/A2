@@ -158,22 +158,39 @@ export default function App() {
             let currentX = 350;
             let currentY = 100;
             
-            Object.keys(payload).forEach((key, index) => {
-               if (payload[key]) {
+            if (payload.nodes && Array.isArray(payload.nodes)) {
+                // New schema handling
+                payload.nodes.forEach((item: any, index: number) => {
                   const nodeId = `mcp_gen_${index}_${Date.now()}`;
                   newNodes.push({
                      id: nodeId,
                      type: 'component',
                      position: { x: currentX, y: currentY },
-                     data: { label: key, value: payload[key], number: globalNodeCounter++ }
+                     data: { label: item.label, value: item.value, weight: item.weight || 1.0, number: globalNodeCounter++ }
                   });
-                  currentY += 120; // stack them vertically
+                  currentY += 120;
                   
-                  // connect input to first, and all to output
                   newEdges.push({ id: `e_1_${nodeId}`, source: '1', target: nodeId });
                   newEdges.push({ id: `e_${nodeId}_2`, source: nodeId, target: '2' });
-               }
-            });
+                });
+            } else {
+                // Legacy flat object fallback
+                Object.keys(payload).forEach((key, index) => {
+                   if (payload[key]) {
+                      const nodeId = `mcp_gen_${index}_${Date.now()}`;
+                      newNodes.push({
+                         id: nodeId,
+                         type: 'component',
+                         position: { x: currentX, y: currentY },
+                         data: { label: key, value: payload[key], number: globalNodeCounter++ }
+                      });
+                      currentY += 120;
+                      
+                      newEdges.push({ id: `e_1_${nodeId}`, source: '1', target: nodeId });
+                      newEdges.push({ id: `e_${nodeId}_2`, source: nodeId, target: '2' });
+                   }
+                });
+            }
             
             if (newNodes.length > 0) {
               // Add to existing canvas
