@@ -1,27 +1,153 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --bg-color: #0f1115;
-  --panel-bg: rgba(25, 27, 33, 0.7);
-  --node-bg: rgba(32, 35, 42, 0.85);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
-  
-  --shadow-node: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-  --glass-blur: blur(12px);
+  /* O'Bend Design System v1.9.2 */
+  --font-size: 16px;
+  --ob-font: 'Inter', sans-serif;
+  --ob-body-size: 11px;
+  --ob-title-weight: 600;
+
+  /* Backgrounds */
+  --ob-bg: #1e1e1e;
+  --ob-panel: #2c2c2c;
+  --ob-panel-2: #383838;
+  --ob-hover: #4a4a4a;
+
+  /* Text */
+  --ob-ink: #ffffff;
+  --ob-muted: #b3b3b3;
+
+  /* Accents */
+  --ob-blue: #18a0fb;
+  --ob-blue-hover: #0d8de3;
+  --ob-success: #1bc47d;
+  --ob-danger: #f24822;
+
+  /* Borders */
+  --ob-line: #444444;
+  --ob-line-2: #555555;
+
+  /* Radii */
+  --ob-radius-shell: 8px;
+  --ob-radius-surface: 6px;
+  --ob-radius-control: 4px;
+  --ob-radius-tight: 4px;
+
+  /* Spacing */
+  --ob-space: 8px;
+
+  /* Existing theme tokens */
+  --background: var(--ob-bg);
+  --foreground: var(--ob-ink);
+  --card: var(--ob-panel);
+  --card-foreground: var(--ob-ink);
+  --popover: var(--ob-panel);
+  --popover-foreground: var(--ob-ink);
+  --primary: var(--ob-blue);
+  --primary-foreground: var(--ob-ink);
+  --secondary: var(--ob-muted);
+  --secondary-foreground: var(--ob-ink);
+  --muted: var(--ob-panel-2);
+  --muted-foreground: var(--ob-muted);
+  --accent: var(--ob-panel-2);
+  --accent-foreground: var(--ob-ink);
+  --destructive: var(--ob-danger);
+  --destructive-foreground: var(--ob-ink);
+  --border: var(--ob-line);
+  --input: transparent;
+  --input-background: var(--ob-panel-2);
+  --switch-background: var(--ob-line-2);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: var(--ob-line-2);
+  --radius: var(--ob-radius-control);
+  --sidebar: var(--ob-panel);
+  --sidebar-foreground: var(--ob-ink);
+  --sidebar-primary: var(--ob-blue);
+  --sidebar-primary-foreground: var(--ob-bg);
+  --sidebar-accent: var(--ob-panel-2);
+  --sidebar-accent-foreground: var(--ob-ink);
+  --sidebar-border: var(--ob-line);
+  --sidebar-ring: var(--ob-line-2);
+
+  /* Legacy aliases for our existing CSS until we migrate everything to tailwind classes */
+  --bg-color: var(--background);
+  --panel-bg: var(--card);
+  --node-bg: var(--card);
+  --border-color: var(--border);
+  --text-primary: var(--foreground);
+  --text-secondary: var(--muted-foreground);
+  --accent-hover: var(--ob-blue-hover);
+  --shadow-node: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    font-family: var(--ob-font);
+    overflow: hidden;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: 5px;
+    border: 2px solid var(--background);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
 }
 
 .app-container {
@@ -32,20 +158,19 @@ body {
 
 .sidebar {
   width: 300px;
-  background: var(--panel-bg);
-  backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--border-color);
+  background: var(--sidebar);
+  border-right: 1px solid var(--sidebar-border);
   display: flex;
   flex-direction: column;
   z-index: 10;
 }
 
 .sidebar-header {
-  padding: 20px;
-  border-bottom: 1px solid var(--border-color);
-  font-weight: 700;
-  font-size: 1.2rem;
-  letter-spacing: 0.5px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--sidebar-border);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
 .sidebar-content {
@@ -59,29 +184,29 @@ body {
 }
 
 .library-title {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
+  color: var(--muted-foreground);
+  margin-bottom: 8px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .library-item {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 8px;
+  background: var(--input-background);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  margin-bottom: 6px;
   cursor: grab;
   transition: all 0.2s ease;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .library-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--accent);
-  transform: translateY(-2px);
+  background: var(--ob-hover);
+  border-color: var(--primary);
+  transform: translateY(-1px);
 }
 
 .flow-container {
@@ -91,29 +216,29 @@ body {
 
 /* Custom Node Styles */
 .custom-node {
-  background: var(--node-bg);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-node);
-  padding: 16px;
+  padding: 12px;
   min-width: 220px;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .custom-node:hover {
-  box-shadow: 0 0 0 2px var(--accent), var(--shadow-node);
+  border-color: var(--primary);
 }
 
 .custom-node.selected {
-  box-shadow: 0 0 0 2px var(--accent), 0 0 20px rgba(99, 102, 241, 0.4);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary), var(--shadow-node);
 }
 
 .node-header {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  font-weight: 700;
+  color: var(--muted-foreground);
+  font-weight: 600;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
   display: flex;
@@ -123,41 +248,78 @@ body {
 
 .node-content input, .node-content select, .node-content textarea {
   width: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border-color);
-  color: white;
-  border-radius: 6px;
-  padding: 8px;
-  font-size: 0.9rem;
+  background: var(--input-background);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  font-size: 0.85rem;
   box-sizing: border-box;
 }
 
 .node-content input:focus, .node-content select:focus, .node-content textarea:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--primary);
 }
 
 .btn-primary {
-  background: var(--accent);
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
   border: none;
-  border-radius: 6px;
-  padding: 10px 16px;
-  font-weight: 600;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 8px;
+  font-size: 0.85rem;
 }
 
 .btn-primary:hover {
-  background: var(--accent-hover);
+  background: var(--ob-blue-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* React Flow overrrides */
 .react-flow__handle {
   width: 10px;
   height: 10px;
-  background: var(--text-primary);
-  border: 2px solid var(--bg-color);
+  background: var(--foreground);
+  border: 2px solid var(--background);
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--primary);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 3px rgba(24, 160, 251, 0.4));
+}
+
+/* React Flow Controls Override */
+.react-flow__controls {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-node);
+}
+
+.react-flow__controls-button {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  fill: var(--foreground);
+  color: var(--foreground);
+  transition: background 0.2s ease;
+}
+
+.react-flow__controls-button:hover {
+  background: var(--ob-hover);
+}
+
+.react-flow__controls-button:last-child {
+  border-bottom: none;
 }

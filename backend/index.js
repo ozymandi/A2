@@ -11,7 +11,8 @@ const HTTP_PORT = 3001;
 // --- Web/WebSocket Server Setup ---
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
@@ -44,13 +45,16 @@ app.post('/api/refine', async (req, res) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                model: "gemma-4-31b",
+                model: "local-model",
                 messages: [
-                    { role: "system", content: "You are an expert prompt engineering assistant. Your task is to enhance and refine a specific characteristic of an image prompt to make it more professional, descriptive, and vivid. Respond ONLY with the refined text, with no conversational filler, no quotes, and no markdown." },
-                    { role: "user", content: `Enhance this '${label}' characteristic for an image prompt: "${value}"` }
+                    { role: "user", content: `You are an expert prompt engineering assistant. Your task is to enhance and refine a specific characteristic of an image prompt to make it more professional, descriptive, and vivid.
+
+Task: Enhance this '${label}' characteristic for an image prompt: "${value}"
+
+Return the refined text directly.` }
                 ],
                 temperature: 0.7,
-                max_tokens: 150
+                max_tokens: 1500
             })
         });
         const data = await response.json();
@@ -62,7 +66,7 @@ app.post('/api/refine', async (req, res) => {
         
         if (data.choices && data.choices[0] && data.choices[0].message) {
             const refined = data.choices[0].message.content.trim();
-            logToFile(`[HTTP] /api/refine Success. Generated: "${refined}"`);
+            logToFile(`[HTTP] /api/refine Success. Full response: ${JSON.stringify(data)}`);
             res.json({ refined });
         } else {
             logToFile(`[HTTP] /api/refine Invalid response from LM Studio: ${JSON.stringify(data)}`);
@@ -83,13 +87,15 @@ app.post('/api/review', async (req, res) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                model: "gemma-4-31b",
+                model: "local-model",
                 messages: [
-                    { role: "system", content: "You are a prompt engineering master. Review the following image generation prompt. Improve its structure, flow, and vocabulary to get the most stunning and accurate image from an AI generator like Midjourney or Stable Diffusion. Output ONLY the improved prompt text, with no extra conversational filler." },
-                    { role: "user", content: prompt }
+                    { role: "user", content: `You are a prompt engineering master. Review the following image generation prompt. Improve its structure, flow, and vocabulary to get the most stunning and accurate image from an AI generator like Midjourney or Stable Diffusion. Output ONLY the improved prompt text, with no extra conversational filler.
+
+Prompt to review:
+${prompt}` }
                 ],
                 temperature: 0.7,
-                max_tokens: 300
+                max_tokens: 2500
             })
         });
         const data = await response.json();
@@ -110,6 +116,242 @@ app.post('/api/review', async (req, res) => {
     } catch (e) {
         console.error("[HTTP] Error reviewing prompt:", e);
         logToFile(`[HTTP] /api/review catch Exception: ${e.message}`);
+        res.status(500).json({ error: e.message });
+    }
+});
+
+app.post('/api/analyze-image', async (req, res) => {
+    try {
+        const { image } = req.body;
+        if (!image) {
+            return res.status(400).json({ error: "No image provided" });
+        }
+
+        logToFile(`[HTTP] POST /api/analyze-image called.`);
+
+        const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "local-model",
+                messages: [
+                    {
+                        role: "user",
+                        content: [
+                            { type: "text", text: "Describe this image in extreme detail, focusing on the subject, lighting, environment, and artistic style. Return ONLY the description, without any conversational filler." },
+                            { type: "image_url", image_url: { url: image } }
+                        ]
+                    }
+                ],
+                temperature: 0.7,
+                max_tokens: 2500
+            })
+        });
+        const data = await response.json();
+
+        if (data.error) {
+            logToFile(`[HTTP] /api/analyze-image LM Studio Error: ${data.error.message}`);
+            throw new Error(`LM Studio Error: ${data.error.message}`);
+        }
+
+        const generated = data.choices[0].message.content.trim();
+        logToFile(`[HTTP] /api/analyze-image Success.`);
+        res.json({ description: generated });
+
+    } catch (error) {
+        logToFile(`[HTTP] /api/analyze-image catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/merge-prompts', async (req, res) => {
+    try {
+        const { prompts } = req.body;
+        if (!prompts || !Array.isArray(prompts)) {
+            return res.status(400).json({ error: "No prompts provided" });
+        }
+
+        logToFile(`[HTTP] POST /api/merge-prompts called with ${prompts.length} prompts.`);
+
+        const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "local-model",
+                messages: [
+                    {
+                        role: "user",
+                        content: `You are an expert prompt engineer. Merge the following scene descriptions into a single, highly cohesive, flowing paragraph without contradictions. Ensure all key subjects and stylistic elements are retained. Return ONLY the merged text.\n\nDescriptions to merge:\n${prompts.map((p, i) => `[${i+1}] ${p}`).join('\n')}`
+                    }
+                ],
+                temperature: 0.7,
+                max_tokens: 2500
+            })
+        });
+        const data = await response.json();
+
+        if (data.error) {
+            logToFile(`[HTTP] /api/merge-prompts LM Studio Error: ${data.error.message}`);
+            throw new Error(`LM Studio Error: ${data.error.message}`);
+        }
+
+        const generated = data.choices[0].message.content.trim();
+        logToFile(`[HTTP] /api/merge-prompts Success.`);
+        res.json({ merged: generated });
+
+    } catch (error) {
+        logToFile(`[HTTP] /api/merge-prompts catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/optimize-prompt', async (req, res) => {
+    try {
+        const { prompt, engine, format } = req.body;
+        if (!prompt) {
+            return res.status(400).json({ error: "No prompt provided" });
+        }
+
+        logToFile(`[HTTP] POST /api/optimize-prompt called for engine: ${engine}, format: ${format}`);
+
+        let systemPrompt = `You are an expert prompt engineer and artist. Optimize the following image generation prompt specifically for the ${engine} rendering engine.`;
+        
+        if (engine === "Midjourney") {
+            systemPrompt += " Use Midjourney syntax where appropriate (like :: weights, aspect ratios). Focus on evocative descriptors, lighting, and camera details.";
+        } else if (engine === "Stable Diffusion" || engine === "Flux") {
+            systemPrompt += " Use Stable Diffusion tag-based syntax (comma separated). Order by importance: Subject, Environment, Lighting, Style, Quality tags.";
+        } else if (engine === "DALL-E") {
+            systemPrompt += " Write a highly descriptive, natural language paragraph. Avoid technical camera terms if they don't make sense, focus on the visual scene.";
+        }
+
+        if (format === "JSON") {
+            systemPrompt += `\n\nYou MUST return the result EXACTLY as a valid JSON object. Do not wrap it in markdown code blocks. The JSON must follow this schema:
+{
+  "subject": "Main subject description",
+  "environment": "Background and setting",
+  "lighting": "Lighting setup",
+  "style": "Artistic style and medium",
+  "camera": "Camera angles or properties (if applicable)",
+  "full_prompt": "The complete, concatenated prompt string ready for the generator"
+}`;
+        } else {
+            systemPrompt += "\n\nReturn ONLY the optimized prompt string without any conversational filler or explanations.";
+        }
+
+        const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "local-model",
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 2500
+            })
+        });
+        const data = await response.json();
+
+        if (data.error) {
+            logToFile(`[HTTP] /api/optimize-prompt LM Studio Error: ${data.error.message}`);
+            throw new Error(`LM Studio Error: ${data.error.message}`);
+        }
+
+        const generated = data.choices[0].message.content.trim();
+        logToFile(`[HTTP] /api/optimize-prompt Success.`);
+        res.json({ optimized: generated });
+
+    } catch (error) {
+        logToFile(`[HTTP] /api/optimize-prompt catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/decompile-image', async (req, res) => {
+    try {
+        const { image, sourceId, x, y } = req.body;
+        if (!image) {
+            return res.status(400).json({ error: "No image provided" });
+        }
+
+        logToFile(`[HTTP] POST /api/decompile-image called.`);
+
+        const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "local-model",
+                messages: [
+                    {
+                        role: "user",
+                        content: [
+                            { type: "text", text: `Analyze this image and break it down into core visual components suitable for a node-based prompt generator.
+If there is a person in the image, you MUST try to determine their Age, Gender, and Race (Ethnicity) and include them as separate nodes.
+Also include the Aspect Ratio of the image (e.g. 16:9, 1:1, 9:16, 4:3, etc).
+You MUST output EXACTLY a valid JSON array of objects, with no markdown code blocks, no intro, no outro.
+Schema (include Age, Gender, Race ONLY if a person is present):
+[
+  { "label": "Subject", "value": "..." },
+  { "label": "Age", "value": "..." },
+  { "label": "Gender", "value": "..." },
+  { "label": "Race", "value": "..." },
+  { "label": "Environment", "value": "..." },
+  { "label": "Lighting", "value": "..." },
+  { "label": "Style", "value": "..." },
+  { "label": "Camera", "value": "..." },
+  { "label": "Aspect Ratio", "value": "..." }
+]` },
+                            { type: "image_url", image_url: { url: image } }
+                        ]
+                    }
+                ],
+                temperature: 0.3,
+                max_tokens: 2500
+            })
+        });
+        const data = await response.json();
+
+        if (data.error) {
+            logToFile(`[HTTP] /api/decompile-image LM Studio Error: ${data.error.message}`);
+            throw new Error(`LM Studio Error: ${data.error.message}`);
+        }
+
+        let generated = data.choices[0].message.content.trim();
+        
+        // Strip markdown backticks if the LLM adds them
+        if (generated.startsWith('```json')) generated = generated.slice(7);
+        if (generated.startsWith('```')) generated = generated.slice(3);
+        if (generated.endsWith('```')) generated = generated.slice(0, -3);
+        generated = generated.trim();
+        
+        let nodesArray = [];
+        try {
+            nodesArray = JSON.parse(generated);
+        } catch (e) {
+            logToFile(`[HTTP] /api/decompile-image Parse Error: ${e.message} on text: ${generated}`);
+            throw new Error("LLM did not return valid JSON");
+        }
+
+        // Broadcast to all WS clients
+        broadcastToUI("render_pipeline", { nodes: nodesArray, sourceId, x, y });
+
+        logToFile(`[HTTP] /api/decompile-image Success. Broadcasted ${nodesArray.length} nodes.`);
+        res.json({ success: true, nodes: nodesArray });
+
+    } catch (error) {
+        logToFile(`[HTTP] /api/decompile-image catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/api/mcp-forward', (req, res) => {
+    try {
+        const payload = req.body;
+        logToFile(`[HTTP] /api/mcp-forward received payload. Broadcasting to ${uiClients.size} clients.`);
+        broadcastToUI("render_pipeline", payload);
+        res.json({ success: true });
+    } catch (e) {
         res.status(500).json({ error: e.message });
     }
 });
@@ -179,8 +421,24 @@ mcp.tool(
         console.error("[MCP] Tool 'render_pipeline' called with params:", params);
         logToFile(`[MCP] Tool 'render_pipeline' called with params: ${JSON.stringify(params)}`);
         
-        // Send data to the UI
-        broadcastToUI("render_pipeline", params);
+        // If we have UI clients, broadcast directly (we are the main process)
+        if (uiClients.size > 0) {
+            broadcastToUI("render_pipeline", params);
+        } else {
+            // We are likely the spawned MCP process, forward to the main process
+            try {
+                await fetch(`http://127.0.0.1:${HTTP_PORT}/api/mcp-forward`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(params)
+                });
+                logToFile("[MCP] Forwarded payload to main UI server successfully.");
+            } catch (e) {
+                logToFile(`[MCP] Failed to forward payload to main server: ${e.message}`);
+                // Fallback broadcast just in case
+                broadcastToUI("render_pipeline", params);
+            }
+        }
         
         logToFile(`[MCP] Tool 'render_pipeline' finished execution`);
         return {
