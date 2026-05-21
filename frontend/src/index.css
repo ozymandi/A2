@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #0f1115;
+  --panel-bg: rgba(25, 27, 33, 0.7);
+  --node-bg: rgba(32, 35, 42, 0.85);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  
+  --shadow-node: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --glass-blur: blur(12px);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 300px;
+  background: var(--panel-bg);
+  backdrop-filter: var(--glass-blur);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.library-section {
+  margin-bottom: 24px;
+}
+
+.library-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.library-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: grab;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.library-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.flow-container {
+  flex: 1;
+  height: 100%;
+}
+
+/* Custom Node Styles */
+.custom-node {
+  background: var(--node-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-node);
+  padding: 16px;
+  min-width: 220px;
+  transition: box-shadow 0.3s ease;
+}
+
+.custom-node:hover {
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-node);
+}
+
+.custom-node.selected {
+  box-shadow: 0 0 0 2px var(--accent), 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+.node-header {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.node-content input, .node-content select, .node-content textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  color: white;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.node-content input:focus, .node-content select:focus, .node-content textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+/* React Flow overrrides */
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  background: var(--text-primary);
+  border: 2px solid var(--bg-color);
+}
