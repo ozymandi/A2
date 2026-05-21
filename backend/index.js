@@ -32,6 +32,36 @@ app.get("/health", (req, res) => {
     res.json({ status: "ok" });
 });
 
+app.post('/api/refine', async (req, res) => {
+    const { label, value } = req.body;
+    try {
+        const response = await fetch("http://localhost:1234/v1/chat/completions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "gemma-4-31b",
+                messages: [
+                    { role: "system", content: "You are an expert prompt engineering assistant. Your task is to enhance and refine a specific characteristic of an image prompt to make it more professional, descriptive, and vivid. Respond ONLY with the refined text, with no conversational filler, no quotes, and no markdown." },
+                    { role: "user", content: `Enhance this '${label}' characteristic for an image prompt: "${value}"` }
+                ],
+                temperature: 0.7,
+                max_tokens: 150
+            })
+        });
+        const data = await response.json();
+        
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+            const refined = data.choices[0].message.content.trim();
+            res.json({ refined });
+        } else {
+            throw new Error("Invalid response from LM Studio");
+        }
+    } catch (e) {
+        console.error("[HTTP] Error refining prompt:", e);
+        res.status(500).json({ error: e.message });
+    }
+});
+
 server.listen(HTTP_PORT, () => {
     console.error(`[HTTP] Server listening on port ${HTTP_PORT}`);
 });

@@ -6,11 +6,9 @@ import {
   Background,
   useNodesState,
   useEdgesState,
-  addEdge,
-  Connection,
-  Edge,
-  Node
+  addEdge
 } from '@xyflow/react';
+import type { Connection, Edge, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import axios from 'axios';
 
@@ -79,9 +77,7 @@ export default function App() {
 
   // Re-calculate the final prompt whenever nodes/edges change
   useEffect(() => {
-    // Find path from input to output
-    // For simplicity, just collect all values from 'component' nodes connected to anything
-    const components = nodes.filter(n => n.type === 'component').map(n => n.data.value).filter(Boolean);
+    const components = nodes.filter(n => n.type === 'component').map(n => n.data?.value).filter(Boolean);
     const inputText = nodes.find(n => n.type === 'inputNode')?.data?.text || '';
     
     let finalPrompt = inputText;
@@ -90,60 +86,93 @@ export default function App() {
       finalPrompt += components.join(', ');
     }
 
-    setNodes(nds => nds.map(node => {
-      if (node.type === 'outputNode') {
-        node.data = { ...node.data, prompt: finalPrompt };
+    setNodes(nds => {
+      const outputNode = nds.find(n => n.type === 'outputNode');
+      if (outputNode && outputNode.data?.prompt !== finalPrompt) {
+        return nds.map(node => {
+          if (node.type === 'outputNode') {
+            return { ...node, data: { ...node.data, prompt: finalPrompt } };
+          }
+          return node;
+        });
       }
-      return node;
-    }));
-  }, [nodes.filter(n => n.type !== 'outputNode').map(n => n.data), edges]); // Dependency on data of non-output nodes and edges
+      return nds;
+    });
+  }, [nodes, edges, setNodes]);
 
   // Connect to backend WebSocket for MCP events
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3001');
-    
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        if (msg.type === 'render_pipeline') {
-          console.log("Received MCP render_pipeline:", msg.payload);
-          
-          // Generate nodes based on payload
-          const payload = msg.payload;
-          const newNodes: Node[] = [];
-          const newEdges: Edge[] = [];
-          
-          let currentX = 350;
-          let currentY = 100;
-          
-          Object.keys(payload).forEach((key, index) => {
-             if (payload[key]) {
-                const nodeId = `mcp_gen_${index}`;
-                newNodes.push({
-                   id: nodeId,
-                   type: 'component',
-                   position: { x: currentX, y: currentY },
-                   data: { label: key, value: payload[key] }
-                });
-                currentY += 120; // stack them vertically
-                
-                // connect input to first, and all to output (simplified for now)
-                newEdges.push({ id: `e_1_${nodeId}`, source: '1', target: nodeId });
-                newEdges.push({ id: `e_${nodeId}_2`, source: nodeId, target: '2' });
-             }
-          });
-          
-          if (newNodes.length > 0) {
-            setNodes((nds) => [...nds.filter(n => n.id === '1' || n.id === '2'), ...newNodes]);
-            setEdges(newEdges);
+    let ws: WebSocket | null = null;
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const connect = () => {
+      ws = new WebSocket('ws://localhost:3001');
+
+      ws.onopen = () => {
+        console.log('Connected to MCP WebSocket');
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          if (msg.type === 'render_pipeline') {
+            console.log("Received MCP render_pipeline:", msg.payload);
+            
+            // Generate nodes based on payload
+            const payload = msg.payload;
+            const newNodes: Node[] = [];
+            const newEdges: Edge[] = [];
+            
+            let currentX = 350;
+            let currentY = 100;
+            
+            Object.keys(payload).forEach((key, index) => {
+               if (payload[key]) {
+                  const nodeId = `mcp_gen_${index}_${Date.now()}`;
+                  newNodes.push({
+                     id: nodeId,
+                     type: 'component',
+                     position: { x: currentX, y: currentY },
+                     data: { label: key, value: payload[key] }
+                  });
+                  currentY += 120; // stack them vertically
+                  
+                  // connect input to first, and all to output
+                  newEdges.push({ id: `e_1_${nodeId}`, source: '1', target: nodeId });
+                  newEdges.push({ id: `e_${nodeId}_2`, source: nodeId, target: '2' });
+               }
+            });
+            
+            if (newNodes.length > 0) {
+              // Add to existing canvas
+              setNodes((nds) => [...nds, ...newNodes]);
+              setEdges((eds) => [...eds, ...newEdges]);
+            }
           }
+        } catch(e) {
+          console.error(e);
         }
-      } catch(e) {
-        console.error(e);
-      }
+      };
+
+      ws.onclose = () => {
+        console.log('WS closed, retrying in 2s...');
+        timeout = setTimeout(connect, 2000);
+      };
+
+      ws.onerror = () => {
+        ws?.close();
+      };
     };
 
-    return () => ws.close();
+    connect();
+
+    return () => {
+      clearTimeout(timeout);
+      if (ws) {
+        ws.onclose = null; // prevent reconnect loop on unmount
+        ws.close();
+      }
+    };
   }, [setNodes, setEdges]);
 
   return (
