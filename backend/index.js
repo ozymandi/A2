@@ -114,14 +114,15 @@ const mcp = new McpServer({
 
 mcp.tool(
     "render_pipeline",
-    "Renders the decompiled prompt components into the node-based visual pipeline. Call this tool after analyzing the image and extracting the prompt components.",
+    "Decompiles an image into distinct prompt builder nodes. You MUST split the image description into highly detailed logical categories (nodes). CRITICAL INSTRUCTIONS: 1. For characters, deeply analyze and extract specific skin tones, textures, facial features, and clothing materials into a 'Subject' or 'Character' node. 2. You MUST create dedicated nodes for 'Style' (art medium), 'Color Palette' (specific hues/shades), and 'Lighting' (direction/quality). 3. Assign a weight (0.1 to 2.0) to emphasize prominent features.",
     {
-        subject: z.string().describe("The main subject(s) or character(s) in the image."),
-        environment: z.string().describe("The setting, background, or environment."),
-        lighting: z.string().describe("The lighting conditions (e.g., cinematic, natural, harsh)."),
-        camera: z.string().describe("Camera details (e.g., wide angle, 50mm, macro, drone view)."),
-        style: z.string().describe("The art style, medium, or aesthetics (e.g., cyberpunk, oil painting, photorealistic)."),
-        extra_details: z.string().describe("Any other important details or modifiers.")
+        nodes: z.array(
+            z.object({
+                label: z.string().describe("Category name (e.g., Camera, Subject, Skin Tones, Lighting, Style, Colors)"),
+                value: z.string().describe("Detailed descriptive text for this category"),
+                weight: z.number().min(0.1).max(2.0).optional().describe("Importance weight from 0.1 to 2.0. Default is 1.0.")
+            })
+        ).describe("List of visual nodes to render in the UI")
     },
     async (params) => {
         console.error("[MCP] Tool 'render_pipeline' called with params:", params);
