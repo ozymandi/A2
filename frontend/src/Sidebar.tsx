@@ -11,7 +11,7 @@ const LIBRARY_PRESETS = [
   },
   {
     category: 'Tools',
-    items: ['Custom Node', 'Remark']
+    items: ['Custom Node']
   },
   {
     category: 'Style & Medium',
