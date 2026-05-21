@@ -35,7 +35,7 @@ app.get("/health", (req, res) => {
 app.post('/api/refine', async (req, res) => {
     const { label, value } = req.body;
     try {
-        const response = await fetch("http://localhost:1234/v1/chat/completions", {
+        const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -69,7 +69,7 @@ app.post('/api/refine', async (req, res) => {
 app.post('/api/review', async (req, res) => {
     const { prompt } = req.body;
     try {
-        const response = await fetch("http://localhost:1234/v1/chat/completions", {
+        const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
