@@ -1,1 +1,15 @@
 2026-05-21T13:57:34.708Z: [HTTP] Server successfully listening on port 3001
+2026-05-21T14:28:49.108Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-21T14:29:13.752Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"Mariah Carey, wearing a flowing, sheer white dress, in a dynamic and elegant pose.","weight":1.5},{"label":"Environment","value":"A minimalist studio setting with a neutral light background, framed by the dark layout of a magazine cover.","weight":1},{"label":"Lighting","value":"Soft, diffused studio lighting that highlights the textures of the fabric and the skin's contours, creating a luminous and ethereal effect.","weight":1.2},{"label":"Camera","value":"Medium shot, centered and slightly low-angle perspective, creating a statuesque and imposing feel.","weight":1},{"label":"Style","value":"A blend of high-fashion photography and conceptual graphic design. The image combines a realistic portrait with a technical, schematic overlay of geometric shapes (circles, triangles, lines).","weight":1.5},{"label":"Details","value":"Abstract geometric diagrams layered over the subject, featuring labels (A, B, C, etc.) and figure numbers (fig. 1, fig. 2), simulating a mathematical or architectural analysis of proportions. Text in Spanish: 'FÍSICA Y CURVAS'.","weight":1.3}]}
+2026-05-21T14:29:13.762Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-21T14:30:20.912Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-21T14:30:32.415Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"Mariah Carey in a sheer, ethereal white flowing dress, posed in an elegant, sculptural manner.","weight":1.5},{"label":"Environment","value":"Minimalist studio background, integrated into a magazine cover layout ('METROPOLIS').","weight":1},{"label":"Lighting","value":"Soft, bright, high-key studio lighting that emphasizes the luminosity of the white dress and the smoothness of the skin.","weight":1.2},{"label":"Camera","value":"Medium shot, frontal view with a slight low angle to enhance the presence and stature of the subject.","weight":1},{"label":"Style","value":"Conceptual high-fashion photography merged with technical schematic art. The realistic image is overlaid with a precision-drawn geometric blueprint.","weight":1.5},{"label":"Details","value":"Complex geometric overlays featuring circles, intersecting lines, and triangles with technical annotations (labels A-N, 'fig. 1', 'fig. 2', 'fig. 3'). Spanish text 'MARIAH CAREY: FÍSICA Y CURVAS'.","weight":1.3}]}
+2026-05-21T14:30:32.415Z: [MCP] Tool 'render_pipeline' finished execution

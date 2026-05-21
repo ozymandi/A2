@@ -38,6 +38,7 @@ app.get("/health", (req, res) => {
 
 app.post('/api/refine', async (req, res) => {
     const { label, value } = req.body;
+    logToFile(`[HTTP] POST /api/refine called. Label: "${label}", Value: "${value}"`);
     try {
         const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
             method: "POST",
@@ -55,23 +56,28 @@ app.post('/api/refine', async (req, res) => {
         const data = await response.json();
         
         if (data.error) {
+            logToFile(`[HTTP] /api/refine LM Studio Error: ${data.error.message}`);
             throw new Error(`LM Studio Error: ${data.error.message}`);
         }
         
         if (data.choices && data.choices[0] && data.choices[0].message) {
             const refined = data.choices[0].message.content.trim();
+            logToFile(`[HTTP] /api/refine Success. Generated: "${refined}"`);
             res.json({ refined });
         } else {
+            logToFile(`[HTTP] /api/refine Invalid response from LM Studio: ${JSON.stringify(data)}`);
             throw new Error("Invalid response from LM Studio");
         }
     } catch (e) {
         console.error("[HTTP] Error refining prompt:", e);
+        logToFile(`[HTTP] /api/refine catch Exception: ${e.message}`);
         res.status(500).json({ error: e.message });
     }
 });
 
 app.post('/api/review', async (req, res) => {
     const { prompt } = req.body;
+    logToFile(`[HTTP] POST /api/review called. Prompt: "${prompt}"`);
     try {
         const response = await fetch("http://127.0.0.1:1234/v1/chat/completions", {
             method: "POST",
@@ -89,25 +95,36 @@ app.post('/api/review', async (req, res) => {
         const data = await response.json();
         
         if (data.error) {
+            logToFile(`[HTTP] /api/review LM Studio Error: ${data.error.message}`);
             throw new Error(`LM Studio Error: ${data.error.message}`);
         }
         
         if (data.choices && data.choices[0] && data.choices[0].message) {
             const refined = data.choices[0].message.content.trim();
+            logToFile(`[HTTP] /api/review Success. Generated: "${refined}"`);
             res.json({ refined });
         } else {
+            logToFile(`[HTTP] /api/review Invalid response from LM Studio: ${JSON.stringify(data)}`);
             throw new Error("Invalid response from LM Studio");
         }
     } catch (e) {
         console.error("[HTTP] Error reviewing prompt:", e);
+        logToFile(`[HTTP] /api/review catch Exception: ${e.message}`);
         res.status(500).json({ error: e.message });
     }
 });
 
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const LOG_FILE = path.join(__dirname, 'mcp_debug.log');
+
 function logToFile(msg) {
     try {
-        fs.appendFileSync('mcp_debug.log', new Date().toISOString() + ': ' + msg + '\n');
+        fs.appendFileSync(LOG_FILE, new Date().toISOString() + ': ' + msg + '\n');
     } catch (e) {
         console.error("[MCP] Could not write to log file:", e.message);
     }
@@ -160,10 +177,12 @@ mcp.tool(
     },
     async (params) => {
         console.error("[MCP] Tool 'render_pipeline' called with params:", params);
+        logToFile(`[MCP] Tool 'render_pipeline' called with params: ${JSON.stringify(params)}`);
         
         // Send data to the UI
         broadcastToUI("render_pipeline", params);
         
+        logToFile(`[MCP] Tool 'render_pipeline' finished execution`);
         return {
             content: [
                 {
@@ -185,6 +204,7 @@ async function runMcpServer() {
     // Crucial: Handle when LM Studio closes the connection
     transport.onclose = () => {
         console.error("[MCP] Connection closed by LM Studio. Shutting down.");
+        logToFile("[MCP] Connection closed by LM Studio. Shutting down.");
         server.close(() => process.exit(0));
     };
 }
@@ -192,10 +212,12 @@ async function runMcpServer() {
 // Fallback: if stdin closes, exit gracefully.
 process.stdin.on('close', () => {
     console.error("[MCP] stdin closed. Shutting down.");
+    logToFile("[MCP] stdin closed. Shutting down.");
     server.close(() => process.exit(0));
 });
 process.stdin.on('end', () => {
     console.error("[MCP] stdin ended. Shutting down.");
+    logToFile("[MCP] stdin ended. Shutting down.");
     server.close(() => process.exit(0));
 });
 
