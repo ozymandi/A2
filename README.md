@@ -7,6 +7,7 @@ A visual, node-based prompt generator for AI image generation (Midjourney, Stabl
 - **Node-Based UI:** Drag and drop elements like Subject, Environment, Camera, Lighting, and more to compose your prompt visually.
 - **Save & Load:** Export your prompt graphs to JSON and load them back later.
 - **AI Decompilation (Vision):** Drop an image into the Base Input, and use an LM Studio Vision model to automatically extract its core components (Subject, Style, Lighting, Camera, etc.) directly into the node graph.
+- **Color Palette & Composition Grid:** Generate intelligent color schemes and scalable SVG wireframes based on your text prompt. These transparent nodes help visualize your ideas without affecting the final output.
 - **Smart Person Attributes:** Automatically detects if a person is in the image and generates specific nodes for Age, Gender, and Race.
 - **AI Prompt Optimization:** Built-in optimizer in the Final Prompt node. Choose your target engine (Midjourney, Stable Diffusion, etc.) and get a refined, professional prompt using your local LLM.
 
