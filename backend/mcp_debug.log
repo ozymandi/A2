@@ -482,3 +482,43 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
 2026-05-22T12:11:46.960Z: [HTTP] /api/generate-palette raw content: ["#0D140F", "#1A2F23", "#3C2F28", "#4B5D3E", "#6B5A4C"]
 2026-05-22T12:11:46.961Z: [HTTP] /api/generate-palette parsed hexes: ["#0D140F","#1A2F23","#3C2F28","#4B5D3E","#6B5A4C"]
 2026-05-22T12:11:46.961Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:13:12.450Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:13:12.917Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:13:22.165Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:14:08.242Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:14:43.563Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"An abstract, organic geometric structure consisting of interconnected loops and intersecting arcs. The form resembles a complex knot, a stylized molecular structure, or a skeletal organic network of intertwined paths.","weight":1.5},{"label":"Environment","value":"A sterile, pure white minimalist void that provides maximum contrast and isolates the subject as a singular specimen.","weight":1},{"label":"Lighting","value":"Flat ambient lighting, where the sense of depth and three-dimensionality is created solely through the variation in line weight, opacity, and the layering of overlapping paths.","weight":1.2},{"label":"Camera","value":"Centered, frontal orthographic view, presenting the structure as a formal, balanced diagram.","weight":1},{"label":"Style","value":"Monochromatic graphite or charcoal sketch. The aesthetic blends the precision of a mathematical diagram with the raw, hand-drawn texture of a fine art drawing.","weight":1.4},{"label":"Details","value":"Variable line thickness, ranging from bold, deep black strokes to faint, ethereal gray lines; rhythmic repetitions of circular and elliptical forms creating a complex visual weave.","weight":1.1}]}
+2026-05-22T12:14:43.570Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-05-22T12:14:43.573Z: [MCP] Forwarded payload to main UI server successfully.
+2026-05-22T12:14:43.574Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-22T12:14:53.258Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:15:09.284Z: [HTTP] /api/generate-palette raw content: ["#264653", "#2A9D8F", "#E9C46A", "#F4A261", "#E76F51"]
+2026-05-22T12:15:09.285Z: [HTTP] /api/generate-palette parsed hexes: ["#264653","#2A9D8F","#E9C46A","#F4A261","#E76F51"]
+2026-05-22T12:15:09.285Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:16:31.093Z: [HTTP] POST /api/analyze-image called.
+2026-05-22T12:16:46.501Z: [HTTP] /api/analyze-image Success.
+2026-05-22T12:17:02.429Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:17:19.877Z: [HTTP] /api/generate-palette raw content: ["#FFFFFF", "#000000", "#FF6B00", "#E0E0E0", "#BDBDBD"]
+2026-05-22T12:17:19.877Z: [HTTP] /api/generate-palette parsed hexes: ["#FFFFFF","#000000","#FF6B00","#E0E0E0","#BDBDBD"]
+2026-05-22T12:17:19.877Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:17:42.715Z: [HTTP] POST /api/analyze-image called.
+2026-05-22T12:17:57.018Z: [HTTP] /api/analyze-image Success.
+2026-05-22T12:17:59.936Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:18:12.892Z: [HTTP] /api/generate-palette raw content: ["#4A3B5F", "#C9A66B", "#CDC8B1", "#EEDADD", "#F7F3E8"]
+2026-05-22T12:18:12.893Z: [HTTP] /api/generate-palette parsed hexes: ["#4A3B5F","#C9A66B","#CDC8B1","#EEDADD","#F7F3E8"]
+2026-05-22T12:18:12.893Z: [HTTP] /api/generate-palette Success.

@@ -36,12 +36,10 @@ const nodeTypes = {
 
 const initialNodes: Node[] = [
   { id: '1', type: 'inputNode', position: { x: 50, y: 150 }, data: { text: '' } },
-  { id: '3', type: 'paletteNode', position: { x: 450, y: 150 }, data: { colors: [] } },
-  { id: '2', type: 'outputNode', position: { x: 800, y: 150 }, data: { prompt: '' } },
+  { id: '2', type: 'outputNode', position: { x: 450, y: 150 }, data: { prompt: '' } },
 ];
 const initialEdges: Edge[] = [
-  { id: 'e1-3', source: '1', target: '3' },
-  { id: 'e3-2', source: '3', target: '2' },
+  { id: 'e1-2', source: '1', target: '2' },
 ];
 
 let id = 0;
