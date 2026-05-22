@@ -11,43 +11,42 @@ export function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3 px-2">Tools</div>
-      
-      <div className="space-y-2 mb-6">
-        <div 
-          className="dndnode flex items-center p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-lg cursor-grab hover:bg-indigo-500/20 transition-all text-sm font-medium text-indigo-400 group"
-          onDragStart={(event) => onDragStart(event, 'mixerNode', 'Mixer', '')}
-          draggable
-        >
-          <Merge className="w-4 h-4 mr-3 opacity-70 group-hover:opacity-100" />
-          Prompt Mixer
-        </div>
-        
-        <div 
-          className="dndnode flex items-center p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg cursor-grab hover:bg-purple-500/20 transition-all text-sm font-medium text-purple-400 group"
-          onDragStart={(event) => onDragStart(event, 'imageVisionNode', 'Base Input', '')}
-          draggable
-        >
-          <Camera className="w-4 h-4 mr-3 opacity-70 group-hover:opacity-100" />
-          Image Vision
-        </div>
-
-        <div 
-          className="dndnode flex items-center p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg cursor-grab hover:bg-blue-500/20 transition-all text-sm font-medium text-blue-400 group"
-          onDragStart={(event) => onDragStart(event, 'paletteNode', 'Color Palette', '')}
-          draggable
-        >
-          <Palette className="w-4 h-4 mr-3 opacity-70 group-hover:opacity-100" />
-          Color Palette
-        </div>
-      </div>
-
       <div className="sidebar-header">
         Prompt Library
       </div>
       <div className="sidebar-content">
         <div className="text-xs text-gray-400 mb-6 italic">
           Drag components onto the canvas to build your prompt pipeline.
+        </div>
+
+        <h3 className="library-title mt-2">Tools</h3>
+        <div className="library-section mb-6">
+          <div 
+            className="library-item flex items-center gap-2"
+            draggable
+            onDragStart={(event) => onDragStart(event, 'mixerNode', 'Mixer', '')}
+          >
+            <Merge className="w-4 h-4 text-white/70" />
+            <span className="font-medium text-sm">Prompt Mixer</span>
+          </div>
+          
+          <div 
+            className="library-item flex items-center gap-2"
+            draggable
+            onDragStart={(event) => onDragStart(event, 'imageVisionNode', 'Base Input', '')}
+          >
+            <Camera className="w-4 h-4 text-white/70" />
+            <span className="font-medium text-sm">Image Vision</span>
+          </div>
+
+          <div 
+            className="library-item flex items-center gap-2"
+            draggable
+            onDragStart={(event) => onDragStart(event, 'paletteNode', 'Color Palette', '')}
+          >
+            <Palette className="w-4 h-4 text-white/70" />
+            <span className="font-medium text-sm">Color Palette</span>
+          </div>
         </div>
         
         <h3 className="library-title mt-2">Basic Nodes</h3>

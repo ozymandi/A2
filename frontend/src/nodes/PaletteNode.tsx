@@ -50,25 +50,25 @@ export function PaletteNode({ id, data }: { id: string, data: any }) {
   };
 
   return (
-    <div className="custom-node" style={{ width: '280px' }}>
-      <Handle type="target" position={Position.Left} className="w-3 h-3 bg-blue-500 border-2 border-background" />
+    <div className="custom-node border-primary" style={{ width: '280px' }}>
+      <Handle type="target" position={Position.Left} />
       
       <div className="flex justify-between items-center mb-3">
-        <div className="node-header text-blue-400 mb-0">
+        <div className="node-header text-primary mb-0">
           <Palette className="w-4 h-4 mr-2" />
           <span className="font-bold tracking-wider text-xs">COLOR PALETTE</span>
         </div>
         <button 
           onClick={generatePalette}
           disabled={isGenerating}
-          className="p-1.5 hover:bg-white/10 rounded-md transition-colors text-blue-400 disabled:opacity-50"
+          className="p-1.5 hover:bg-input-background rounded-md transition-colors text-primary disabled:opacity-50 border border-transparent hover:border-border"
           title="Regenerate Palette from incoming nodes"
         >
           <RefreshCw className={`w-4 h-4 ${isGenerating ? 'animate-spin' : ''}`} />
         </button>
       </div>
 
-      <div className="bg-white/5 rounded-lg border border-white/10 p-3 mb-3">
+      <div className="node-content bg-input-background rounded-lg border border-border p-3 mb-3">
         {colors.length > 0 ? (
           <div className="flex flex-col gap-2">
             <div className="flex h-12 rounded-md overflow-hidden shadow-inner">
@@ -86,11 +86,11 @@ export function PaletteNode({ id, data }: { id: string, data: any }) {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between text-xs text-white/50 font-mono mt-1">
+            <div className="flex justify-between text-xs text-muted-foreground font-mono mt-1">
               {colors.map((hex, i) => (
                 <span 
                   key={i} 
-                  className="cursor-pointer hover:text-white transition-colors"
+                  className="cursor-pointer hover:text-foreground transition-colors"
                   onClick={() => copyHex(hex)}
                 >
                   {hex.toUpperCase()}
@@ -99,7 +99,7 @@ export function PaletteNode({ id, data }: { id: string, data: any }) {
             </div>
           </div>
         ) : (
-          <div className="text-center text-xs text-white/40 py-4 italic">
+          <div className="text-center text-xs text-muted-foreground py-4 italic">
             Click generate to extract palette
           </div>
         )}
@@ -109,20 +109,20 @@ export function PaletteNode({ id, data }: { id: string, data: any }) {
         <button 
           onClick={copyJson}
           disabled={colors.length === 0}
-          className="flex-1 text-xs py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="flex-1 text-xs py-2 bg-input-background hover:bg-background border border-border rounded-md transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-foreground"
         >
           <Copy className="w-3 h-3" /> JSON
         </button>
         <button 
           onClick={exportAse}
           disabled={colors.length === 0}
-          className="flex-1 text-xs py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 rounded-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          className="flex-1 text-xs py-2 bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
         >
           <Download className="w-3 h-3" /> .ASE
         </button>
       </div>
 
-      <Handle type="source" position={Position.Right} className="w-3 h-3 bg-blue-500 border-2 border-background" />
+      <Handle type="source" position={Position.Right} />
     </div>
   );
 }
