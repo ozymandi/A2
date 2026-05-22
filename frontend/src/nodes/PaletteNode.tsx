@@ -86,17 +86,6 @@ export function PaletteNode({ id, data }: { id: string, data: any }) {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between text-xs text-muted-foreground font-mono mt-1">
-              {colors.map((hex, i) => (
-                <span 
-                  key={i} 
-                  className="cursor-pointer hover:text-foreground transition-colors"
-                  onClick={() => copyHex(hex)}
-                >
-                  {hex.toUpperCase()}
-                </span>
-              ))}
-            </div>
           </div>
         ) : (
           <div className="text-center text-xs text-muted-foreground py-4 italic">

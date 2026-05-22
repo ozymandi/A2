@@ -431,3 +431,6 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
 2026-05-22T11:56:09.608Z: [HTTP] POST /api/optimize-prompt called for engine: Midjourney, format: Plain Text
 2026-05-22T11:56:23.109Z: [HTTP] /api/optimize-prompt Success.
 2026-05-22T11:57:38.169Z: [HTTP] POST /api/decompile-image called.
+2026-05-22T11:57:52.102Z: [HTTP] /api/decompile-image Success. Broadcasted 7 nodes.
+2026-05-22T11:58:04.981Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T11:58:04.981Z: [HTTP] /api/generate-palette catch Exception: LM_STUDIO_URL is not defined
