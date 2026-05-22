@@ -22,6 +22,7 @@ import { OutputNode } from './nodes/OutputNode';
 import { ImageVisionNode } from './nodes/ImageVisionNode';
 import { MixerNode } from './nodes/MixerNode';
 import { PaletteNode } from './nodes/PaletteNode';
+import { GridNode } from './nodes/GridNode';
 import { Sidebar } from './Sidebar';
 import { useUndoRedo } from './hooks/useUndoRedo';
 
@@ -32,6 +33,7 @@ const nodeTypes = {
   imageVisionNode: ImageVisionNode,
   mixerNode: MixerNode,
   paletteNode: PaletteNode,
+  gridNode: GridNode,
 };
 
 const initialNodes: Node[] = [
@@ -293,8 +295,8 @@ export default function App() {
       }
 
       // Default behavior for nodes (Output, Component, Input, Vision, passthrough): Combine incoming with own
-      if (node.type === 'paletteNode') {
-        // Palette node is a transparent pass-through for the text
+      if (node.type === 'paletteNode' || node.type === 'gridNode') {
+        // Palette/Grid nodes are a transparent pass-through for the text
         return incomingTexts.join(', ');
       }
       if (incomingTexts.length > 0) {
@@ -325,7 +327,7 @@ export default function App() {
           changed = true;
           return { ...node, data: { ...node.data, prompt: finalPrompt } };
         }
-        if (node.type === 'paletteNode') {
+        if (node.type === 'paletteNode' || node.type === 'gridNode') {
           const incomingEdges = edges.filter(e => e.target === node.id);
           const incomingTexts = incomingEdges
             .map(e => evaluateNode(e.source))
@@ -381,6 +383,23 @@ export default function App() {
                         position: { x: currentX, y: currentY },
                         data: { colors: hexes, number: globalNodeCounter++ }
                      });
+                  } else if (item.label === 'Composition Grid') {
+                     let rects = [];
+                     try {
+                        if (typeof item.value === 'string') {
+                           const cleanValue = item.value.replace(/```json/g, '').replace(/```/g, '').trim();
+                           rects = JSON.parse(cleanValue);
+                           if (!Array.isArray(rects)) rects = [];
+                        }
+                     } catch (e) {
+                        console.error("Failed to parse grid JSON from LLM", e);
+                     }
+                     newNodes.push({
+                        id: nodeId,
+                        type: 'gridNode',
+                        position: { x: currentX, y: currentY },
+                        data: { rects, incomingText: item.value }
+                     });
                   } else {
                      const presets = NODE_PRESETS[item.label] || [];
                      const flatPresets = presets.reduce((acc: string[], curr: PresetItem) => {
@@ -413,6 +432,23 @@ export default function App() {
                             type: 'paletteNode',
                             position: { x: currentX, y: currentY },
                             data: { colors: hexes, number: globalNodeCounter++ }
+                         });
+                      } else if (key === 'Composition Grid') {
+                         let rects = [];
+                         try {
+                            if (typeof payload[key] === 'string') {
+                               const cleanValue = payload[key].replace(/```json/g, '').replace(/```/g, '').trim();
+                               rects = JSON.parse(cleanValue);
+                               if (!Array.isArray(rects)) rects = [];
+                            }
+                         } catch (e) {
+                            console.error("Failed to parse grid JSON from LLM", e);
+                         }
+                         newNodes.push({
+                            id: nodeId,
+                            type: 'gridNode',
+                            position: { x: currentX, y: currentY },
+                            data: { rects, incomingText: payload[key] }
                          });
                       } else {
                          const presets = NODE_PRESETS[key] || [];

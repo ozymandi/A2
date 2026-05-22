@@ -301,7 +301,8 @@ Schema (include Age, Gender, Race ONLY if a person is present):
   { "label": "Style", "value": "..." },
   { "label": "Camera", "value": "..." },
   { "label": "Color Palette", "value": "#hex1, #hex2, #hex3, #hex4, #hex5" },
-  { "label": "Aspect Ratio", "value": "..." }
+  { "label": "Aspect Ratio", "value": "..." },
+  { "label": "Composition Grid", "value": "A detailed layout description to be parsed as a grid. E.g. Header at top 100% width, Subject centered 50% width." }
 ]` },
                             { type: "image_url", image_url: { url: image } }
                         ]
@@ -415,6 +416,67 @@ Prompt:
         res.status(500).json({ error: error.message });
     }
 });
+
+app.post('/api/generate-grid', async (req, res) => {
+    logToFile(`[HTTP] POST /api/generate-grid called.`);
+    try {
+        const { text } = req.body;
+        if (!text) {
+            return res.status(400).json({ error: "No text provided" });
+        }
+
+        const prompt = `Based on the following descriptive prompt of a scene or UI, generate an ideal 2D composition layout.
+Output MUST be exactly a JSON array of objects, where each object represents a bounding box for an element in the scene.
+Each object must have these exact keys: "label" (string), "x" (number 0-100), "y" (number 0-100), "width" (number 0-100), "height" (number 0-100).
+The x and y are the top-left coordinates in percentages. Width and height are in percentages.
+Do not include any other text, markdown blocks, or explanations. Just the JSON array.
+Example: [{"label": "Header", "x": 0, "y": 0, "width": 100, "height": 10}]
+
+Prompt:
+"${text}"`;
+
+        const response = await fetch(`http://127.0.0.1:1234/v1/chat/completions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "local-model",
+                messages: [
+                    { role: "system", content: "You are a professional layout designer. You only output strict JSON arrays." },
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 2500
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`LM Studio API error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const content = data.choices[0].message.content.trim();
+        
+        logToFile(`[HTTP] /api/generate-grid raw content: ${content}`);
+
+        let rects = [];
+        try {
+            const cleanContent = content.replace(/```json/g, '').replace(/```/g, '').trim();
+            rects = JSON.parse(cleanContent);
+            if (!Array.isArray(rects)) rects = [];
+        } catch (e) {
+            logToFile(`[HTTP] /api/generate-grid parse error: ${e.message}`);
+        }
+
+        logToFile(`[HTTP] /api/generate-grid parsed rects count: ${rects.length}`);
+
+        logToFile(`[HTTP] /api/generate-grid Success.`);
+        res.json({ rects });
+    } catch (error) {
+        logToFile(`[HTTP] /api/generate-grid catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 
 import path from "path";
