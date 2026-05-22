@@ -381,7 +381,7 @@ Prompt:
                     { role: "user", content: prompt }
                 ],
                 temperature: 0.7,
-                max_tokens: 150
+                max_tokens: 2500
             })
         });
 
@@ -392,6 +392,8 @@ Prompt:
         const data = await response.json();
         const content = data.choices[0].message.content.trim();
         
+        logToFile(`[HTTP] /api/generate-palette raw content: ${content}`);
+
         let hexes = [];
         try {
             // Remove markdown code blocks if the LLM adds them
@@ -403,6 +405,8 @@ Prompt:
         }
 
         if (hexes.length > 5) hexes = hexes.slice(0, 5);
+        
+        logToFile(`[HTTP] /api/generate-palette parsed hexes: ${JSON.stringify(hexes)}`);
 
         logToFile(`[HTTP] /api/generate-palette Success.`);
         res.json({ colors: hexes });

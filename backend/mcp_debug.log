@@ -434,3 +434,51 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
 2026-05-22T11:57:52.102Z: [HTTP] /api/decompile-image Success. Broadcasted 7 nodes.
 2026-05-22T11:58:04.981Z: [HTTP] POST /api/generate-palette called.
 2026-05-22T11:58:04.981Z: [HTTP] /api/generate-palette catch Exception: LM_STUDIO_URL is not defined
+2026-05-22T12:00:40.688Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T12:00:56.696Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:01:35.609Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"A professional software dashboard for a cash register system, meticulously organized into functional modules. The layout is divided into a dark control header and a light-themed operational area with two distinct categories: 'Oficina' (Office) and 'Productos' (Products).","weight":1.5},{"label":"Environment","value":"A clean, digital environment with a soft, pastel-blue backdrop that provides a professional and non-distracting atmosphere for the user.","weight":1},{"label":"Lighting","value":"Flat digital lighting with soft ambient occlusion shadows beneath the circular buttons, creating a tactile, layered effect consistent with modern UI design patterns.","weight":1.2},{"label":"Camera","value":"Orthographic 2D view, perfectly centered, simulating a high-resolution screen capture of a desktop application.","weight":1},{"label":"Style","value":"Contemporary enterprise UI design. The aesthetic focuses on clarity and efficiency, using a bold complementary color scheme (Deep Blue vs. Vibrant Orange) to visually separate different work streams.","weight":1.4},{"label":"Details","value":"A comprehensive set of stylized vector icons representing business operations, a high-visibility red 'CERRAR' action button, and the minimalist 'ince' corporate branding in the upper right corner.","weight":1.1}]}
+2026-05-22T12:01:35.623Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-05-22T12:01:35.626Z: [MCP] Forwarded payload to main UI server successfully.
+2026-05-22T12:01:35.626Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-22T12:02:16.288Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:02:21.565Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:03:48.526Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:03:51.972Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:04:21.764Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:04:24.563Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:06:52.656Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T12:07:00.464Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:07:03.257Z: [HTTP] /api/generate-palette raw content: 
+2026-05-22T12:07:03.258Z: [HTTP] /api/generate-palette parsed hexes: []
+2026-05-22T12:07:03.258Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:07:29.223Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:07:32.253Z: [HTTP] /api/generate-palette raw content: 
+2026-05-22T12:07:32.253Z: [HTTP] /api/generate-palette parsed hexes: []
+2026-05-22T12:07:32.253Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:07:34.111Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:07:36.950Z: [HTTP] /api/generate-palette raw content: 
+2026-05-22T12:07:36.950Z: [HTTP] /api/generate-palette parsed hexes: []
+2026-05-22T12:07:36.950Z: [HTTP] /api/generate-palette Success.
+2026-05-22T12:09:15.154Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:09:33.773Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:10:06.584Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"A sophisticated digital command center for a cash register system. The interface is architected for maximum efficiency, splitting the operational flow into a dark strategic header and a bright, intuitive main workspace with categorized functional hubs.","weight":1.5},{"label":"Environment","value":"A polished software environment utilizing a muted, professional blue-gray color palette that minimizes eye strain and maximizes the visibility of the colorful interactive elements.","weight":1},{"label":"Lighting","value":"Consistent digital luminescence with strategic soft-drop shadows that give the interactive buttons a 'lifted' effect, creating a tactile and layered user experience.","weight":1.2},{"label":"Camera","value":"A flawless 2D orthographic projection, presenting the UI as a static high-fidelity mockup without perspective distortion.","weight":1},{"label":"Style","value":"Modern Enterprise SaaS (Software as a Service) aesthetic. It balances rigid structural organization with friendly, rounded geometry and a high-contrast color-coding system (Deep Blue vs. Energetic Orange).","weight":1.4},{"label":"Details","value":"A grid of meticulously designed vector glyphs for business logic, a high-priority red 'CERRAR' action button for critical flow control, and the minimalist 'ince' corporate logo acting as a brand anchor.","weight":1.1}]}
+2026-05-22T12:10:06.592Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-05-22T12:10:06.594Z: [MCP] Forwarded payload to main UI server successfully.
+2026-05-22T12:10:06.595Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-22T12:11:31.877Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T12:11:40.480Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T12:11:46.960Z: [HTTP] /api/generate-palette raw content: ["#0D140F", "#1A2F23", "#3C2F28", "#4B5D3E", "#6B5A4C"]
+2026-05-22T12:11:46.961Z: [HTTP] /api/generate-palette parsed hexes: ["#0D140F","#1A2F23","#3C2F28","#4B5D3E","#6B5A4C"]
+2026-05-22T12:11:46.961Z: [HTTP] /api/generate-palette Success.
