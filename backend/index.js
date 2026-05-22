@@ -371,7 +371,7 @@ Output MUST be exactly a JSON array of 5 hex codes, e.g. ["#000000", "#FFFFFF", 
 Prompt:
 "${text}"`;
 
-        const response = await fetch(`${LM_STUDIO_URL}/v1/chat/completions`, {
+        const response = await fetch(`http://127.0.0.1:1234/v1/chat/completions`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
