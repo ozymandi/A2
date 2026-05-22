@@ -537,3 +537,10 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
 2026-05-22T12:26:12.848Z: [HTTP] /api/generate-palette Success.
 2026-05-22T12:27:28.715Z: [HTTP] POST /api/analyze-image called.
 2026-05-22T12:27:44.197Z: [HTTP] /api/analyze-image Success.
+2026-05-22T12:35:03.533Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T12:36:34.437Z: [HTTP] POST /api/analyze-image called.
+2026-05-22T12:36:54.516Z: [HTTP] /api/analyze-image Success.

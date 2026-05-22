@@ -53,8 +53,7 @@ Task: Enhance this '${label}' characteristic for an image prompt: "${value}"
 
 Return the refined text directly.` }
                 ],
-                temperature: 0.7,
-                max_tokens: 1500
+                temperature: 0.7, max_tokens: -1
             })
         });
         const data = await response.json();
@@ -94,8 +93,7 @@ app.post('/api/review', async (req, res) => {
 Prompt to review:
 ${prompt}` }
                 ],
-                temperature: 0.7,
-                max_tokens: 2500
+                temperature: 0.7, max_tokens: -1
             })
         });
         const data = await response.json();
@@ -143,8 +141,7 @@ app.post('/api/analyze-image', async (req, res) => {
                         ]
                     }
                 ],
-                temperature: 0.7,
-                max_tokens: 2500
+                temperature: 0.7, max_tokens: -1
             })
         });
         const data = await response.json();
@@ -184,8 +181,7 @@ app.post('/api/merge-prompts', async (req, res) => {
                         content: `You are an expert prompt engineer. Merge the following scene descriptions into a single, highly cohesive, flowing paragraph without contradictions. Ensure all key subjects and stylistic elements are retained. Return ONLY the merged text.\n\nDescriptions to merge:\n${prompts.map((p, i) => `[${i+1}] ${p}`).join('\n')}`
                     }
                 ],
-                temperature: 0.7,
-                max_tokens: 2500
+                temperature: 0.7, max_tokens: -1
             })
         });
         const data = await response.json();
@@ -247,8 +243,7 @@ app.post('/api/optimize-prompt', async (req, res) => {
                     { role: "system", content: systemPrompt },
                     { role: "user", content: prompt }
                 ],
-                temperature: 0.7,
-                max_tokens: 2500
+                temperature: 0.7, max_tokens: -1
             })
         });
         const data = await response.json();
@@ -308,8 +303,7 @@ Schema (include Age, Gender, Race ONLY if a person is present):
                         ]
                     }
                 ],
-                temperature: 0.3,
-                max_tokens: 2500
+                temperature: 0.3, max_tokens: -1
             })
         });
         const data = await response.json();
@@ -381,8 +375,7 @@ Prompt:
                     { role: "system", content: "You are a professional colorist and designer. You only output strict JSON arrays." },
                     { role: "user", content: prompt }
                 ],
-                temperature: 0.7,
-                max_tokens: 2500
+                temperature: 0.7, max_tokens: -1
             })
         });
 
@@ -444,8 +437,7 @@ Prompt:
                     { role: "system", content: "You are a professional layout designer. You only output strict JSON arrays." },
                     { role: "user", content: prompt }
                 ],
-                temperature: 0.7,
-                max_tokens: 2500
+                temperature: 0.7, max_tokens: -1
             })
         });
 
