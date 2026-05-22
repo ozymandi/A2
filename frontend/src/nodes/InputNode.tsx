@@ -1,7 +1,7 @@
 import { Handle, Position } from '@xyflow/react';
 import { Type, Bot } from 'lucide-react';
 
-export function InputNode({ data }: { data: any }) {
+export function InputNode() {
   return (
     <div className="custom-node border-primary">
       <div className="node-header text-primary">

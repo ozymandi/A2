@@ -1,4 +1,5 @@
 import React from 'react';
+import { Merge, Camera, Palette } from 'lucide-react';
 
 export function Sidebar() {
   const onDragStart = (event: React.DragEvent, nodeType: string, label: string, value: string) => {
@@ -10,6 +11,37 @@ export function Sidebar() {
 
   return (
     <aside className="sidebar">
+      <div className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3 px-2">Tools</div>
+      
+      <div className="space-y-2 mb-6">
+        <div 
+          className="dndnode flex items-center p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-lg cursor-grab hover:bg-indigo-500/20 transition-all text-sm font-medium text-indigo-400 group"
+          onDragStart={(event) => onDragStart(event, 'mixerNode', 'Mixer', '')}
+          draggable
+        >
+          <Merge className="w-4 h-4 mr-3 opacity-70 group-hover:opacity-100" />
+          Prompt Mixer
+        </div>
+        
+        <div 
+          className="dndnode flex items-center p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg cursor-grab hover:bg-purple-500/20 transition-all text-sm font-medium text-purple-400 group"
+          onDragStart={(event) => onDragStart(event, 'imageVisionNode', 'Base Input', '')}
+          draggable
+        >
+          <Camera className="w-4 h-4 mr-3 opacity-70 group-hover:opacity-100" />
+          Image Vision
+        </div>
+
+        <div 
+          className="dndnode flex items-center p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg cursor-grab hover:bg-blue-500/20 transition-all text-sm font-medium text-blue-400 group"
+          onDragStart={(event) => onDragStart(event, 'paletteNode', 'Color Palette', '')}
+          draggable
+        >
+          <Palette className="w-4 h-4 mr-3 opacity-70 group-hover:opacity-100" />
+          Color Palette
+        </div>
+      </div>
+
       <div className="sidebar-header">
         Prompt Library
       </div>

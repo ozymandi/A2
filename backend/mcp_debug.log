@@ -366,3 +366,56 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
 2026-05-21T18:04:28.622Z: [HTTP] /api/optimize-prompt Success.
 2026-05-21T18:06:05.050Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
 2026-05-21T18:06:18.895Z: [HTTP] /api/optimize-prompt Success.
+2026-05-21T18:09:29.708Z: [HTTP] POST /api/decompile-image called.
+2026-05-21T18:09:37.149Z: [HTTP] /api/decompile-image Success. Broadcasted 5 nodes.
+2026-05-21T18:10:18.797Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-21T18:10:28.384Z: [HTTP] /api/optimize-prompt Success.
+2026-05-21T18:11:40.577Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-21T18:11:56.873Z: [HTTP] /api/optimize-prompt Success.
+2026-05-21T18:14:54.447Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-21T18:15:03.510Z: [HTTP] /api/optimize-prompt Success.
+2026-05-21T18:16:47.181Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-21T18:16:59.363Z: [HTTP] /api/optimize-prompt Success.
+2026-05-21T18:24:00.436Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-21T18:24:11.337Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-21T18:24:12.005Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-21T18:25:05.056Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-21T18:25:39.754Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"A singular, transparent glass hammer positioned centrally. The object is made of clear, reflective glass, symbolizing a paradox between strength and fragility.","weight":1.5},{"label":"Environment","value":"A minimalist, neutral light-gray void. The background is sterile and clean, ensuring the viewer's total focus remains on the transparent object.","weight":1},{"label":"Lighting","value":"Soft, diffused studio lighting. It creates subtle, elegant highlights on the edges of the glass and avoids harsh shadows, emphasizing the material's transparency.","weight":1.2},{"label":"Camera","value":"A direct, frontal eye-level shot. The composition is strictly centered and symmetrical, evoking a sense of formal stability.","weight":1},{"label":"Style","value":"Conceptual minimalism. The aesthetic blends high-end product photography with a modern graphic design layout, utilizing a monochrome palette and significant negative space.","weight":1.4},{"label":"Details","value":"The image serves as a poster with typographic elements in Spanish. It features a contrast between the words 'el ruido' (the noise) and 'el silencio' (the silence), along with details for a graphic design course in Albarracín, 2015.","weight":1.1}]}
+2026-05-21T18:25:39.771Z: [MCP] Forwarded payload to main UI server successfully.
+2026-05-21T18:25:39.772Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-21T18:26:44.565Z: [HTTP] POST /api/analyze-image called.
+2026-05-21T18:27:03.496Z: [HTTP] /api/analyze-image Success.
+2026-05-21T18:27:08.391Z: [HTTP] POST /api/decompile-image called.
+2026-05-21T18:27:16.922Z: [HTTP] /api/decompile-image Success. Broadcasted 5 nodes.
+2026-05-21T18:27:36.090Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-21T18:27:58.555Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T10:46:32.054Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T10:46:32.602Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T10:59:56.246Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T11:00:33.625Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T11:01:12.796Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"A professional digital dashboard/UI for a cash register system ('Caja Registradora'). The interface is organized into a dark header and a two-column main body featuring a grid of functional, colorful circular icons.","weight":1.5},{"label":"Environment","value":"A digital workspace with a soft, neutral light-blue background and a contrasting dark-gray top navigation bar.","weight":1},{"label":"Lighting","value":"Flat, digital illumination with subtle gradients and soft drop shadows under the buttons to create a modern 'Material Design' sense of depth.","weight":1.2},{"label":"Camera","value":"Frontal, orthographic 2D projection, typical of a software interface screenshot.","weight":1},{"label":"Style","value":"Modern flat-design UI/UX. The aesthetic is clean and functional, utilizing a structured layout, rounded corners, and a color-coded system (blue for office functions, orange for product functions).","weight":1.4},{"label":"Details","value":"Features high-quality vector icons for various business functions, a prominent red 'CERRAR' button, and the corporate branding 'ince' in the top right corner.","weight":1.1}]}
+2026-05-22T11:01:12.822Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-05-22T11:01:12.826Z: [MCP] Forwarded payload to main UI server successfully.
+2026-05-22T11:01:12.827Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-22T11:12:33.294Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-22T11:12:54.491Z: [HTTP] /api/optimize-prompt Success.

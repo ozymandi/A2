@@ -300,6 +300,7 @@ Schema (include Age, Gender, Race ONLY if a person is present):
   { "label": "Lighting", "value": "..." },
   { "label": "Style", "value": "..." },
   { "label": "Camera", "value": "..." },
+  { "label": "Color Palette", "value": "#hex1, #hex2, #hex3, #hex4, #hex5" },
   { "label": "Aspect Ratio", "value": "..." }
 ]` },
                             { type: "image_url", image_url: { url: image } }
@@ -353,6 +354,61 @@ app.post('/api/mcp-forward', (req, res) => {
         res.json({ success: true });
     } catch (e) {
         res.status(500).json({ error: e.message });
+    }
+});
+
+app.post('/api/generate-palette', async (req, res) => {
+    logToFile(`[HTTP] POST /api/generate-palette called.`);
+    try {
+        const { text } = req.body;
+        if (!text) {
+            return res.status(400).json({ error: "No text provided" });
+        }
+
+        const prompt = `Based on the following descriptive prompt, generate a cohesive color palette of exactly 5 colors that perfectly matches the aesthetic, mood, and lighting described.
+Output MUST be exactly a JSON array of 5 hex codes, e.g. ["#000000", "#FFFFFF", "#FF0000", "#00FF00", "#0000FF"]. Do not include any other text, markdown blocks, or explanations.
+
+Prompt:
+"${text}"`;
+
+        const response = await fetch(`${LM_STUDIO_URL}/v1/chat/completions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "local-model",
+                messages: [
+                    { role: "system", content: "You are a professional colorist and designer. You only output strict JSON arrays." },
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 150
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`LM Studio API error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const content = data.choices[0].message.content.trim();
+        
+        let hexes = [];
+        try {
+            // Remove markdown code blocks if the LLM adds them
+            const cleanContent = content.replace(/```json/g, '').replace(/```/g, '').trim();
+            hexes = JSON.parse(cleanContent);
+        } catch (e) {
+            // Fallback: extract hexes using regex
+            hexes = content.match(/#[0-9a-fA-F]{6}/g) || [];
+        }
+
+        if (hexes.length > 5) hexes = hexes.slice(0, 5);
+
+        logToFile(`[HTTP] /api/generate-palette Success.`);
+        res.json({ colors: hexes });
+    } catch (error) {
+        logToFile(`[HTTP] /api/generate-palette catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
     }
 });
 

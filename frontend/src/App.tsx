@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import {
   ReactFlow,
   MiniMap,
-  Controls,
   Background,
   Panel,
   useNodesState,
@@ -12,7 +11,6 @@ import {
 } from '@xyflow/react';
 import type { Connection, Edge, Node } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import axios from 'axios';
 
 import { doIntersect } from './utils/math';
 import { NODE_PRESETS } from './constants/presets';
@@ -23,6 +21,7 @@ import { ComponentNode } from './nodes/ComponentNode';
 import { OutputNode } from './nodes/OutputNode';
 import { ImageVisionNode } from './nodes/ImageVisionNode';
 import { MixerNode } from './nodes/MixerNode';
+import { PaletteNode } from './nodes/PaletteNode';
 import { Sidebar } from './Sidebar';
 import { useUndoRedo } from './hooks/useUndoRedo';
 
@@ -32,13 +31,18 @@ const nodeTypes = {
   outputNode: OutputNode,
   imageVisionNode: ImageVisionNode,
   mixerNode: MixerNode,
+  paletteNode: PaletteNode,
 };
 
 const initialNodes: Node[] = [
   { id: '1', type: 'inputNode', position: { x: 50, y: 150 }, data: { text: '' } },
+  { id: '3', type: 'paletteNode', position: { x: 450, y: 150 }, data: { colors: [] } },
   { id: '2', type: 'outputNode', position: { x: 800, y: 150 }, data: { prompt: '' } },
 ];
-const initialEdges: Edge[] = [];
+const initialEdges: Edge[] = [
+  { id: 'e1-3', source: '1', target: '3' },
+  { id: 'e3-2', source: '3', target: '2' },
+];
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -122,7 +126,7 @@ export default function App() {
     }
   };
 
-  const handlePointerUp = (e: React.PointerEvent) => {
+  const handlePointerUp = () => {
     if (isCuttingRef.current && cutLine && reactFlowInstance) {
       isCuttingRef.current = false;
       const rect = reactFlowWrapper.current?.getBoundingClientRect();
@@ -291,6 +295,10 @@ export default function App() {
       }
 
       // Default behavior for nodes (Output, Component, Input, Vision, passthrough): Combine incoming with own
+      if (node.type === 'paletteNode') {
+        // Palette node is a transparent pass-through for the text
+        return incomingTexts.join(', ');
+      }
       if (incomingTexts.length > 0) {
         if (ownText) return incomingTexts.join(', ') + ', ' + ownText;
         return incomingTexts.join(', ');
@@ -313,16 +321,26 @@ export default function App() {
     }
 
     setNodes(nds => {
-      const outputNode = nds.find(n => n.type === 'outputNode');
-      if (outputNode && outputNode.data?.prompt !== finalPrompt) {
-        return nds.map(node => {
-          if (node.type === 'outputNode') {
-            return { ...node, data: { ...node.data, prompt: finalPrompt } };
+      let changed = false;
+      const newNodes = nds.map(node => {
+        if (node.type === 'outputNode' && node.data?.prompt !== finalPrompt) {
+          changed = true;
+          return { ...node, data: { ...node.data, prompt: finalPrompt } };
+        }
+        if (node.type === 'paletteNode') {
+          const incomingEdges = edges.filter(e => e.target === node.id);
+          const incomingTexts = incomingEdges
+            .map(e => evaluateNode(e.source))
+            .filter(t => t !== '');
+          const combinedIncoming = incomingTexts.join(', ');
+          if (node.data?.incomingText !== combinedIncoming) {
+            changed = true;
+            return { ...node, data: { ...node.data, incomingText: combinedIncoming } };
           }
-          return node;
-        });
-      }
-      return nds;
+        }
+        return node;
+      });
+      return changed ? newNodes : nds;
     });
   }, [nodes, edges, setNodes]);
 
@@ -355,22 +373,34 @@ export default function App() {
                 // New schema handling
                 payload.nodes.forEach((item: any, index: number) => {
                   const nodeId = `mcp_gen_${index}_${Date.now()}`;
-                  const presets = NODE_PRESETS[item.label] || [];
-                  const flatPresets = presets.reduce((acc: string[], curr: PresetItem) => {
-                    if (typeof curr === 'string') {
-                      acc.push(curr);
-                    } else {
-                      acc.push(...curr.items);
-                    }
-                    return acc;
-                  }, []);
-                  const preset = flatPresets.includes(item.value) ? item.value : (item.value ? 'Custom' : 'None');
-                  newNodes.push({
-                     id: nodeId,
-                     type: 'component',
-                     position: { x: currentX, y: currentY },
-                     data: { label: item.label, value: item.value, preset, weight: item.weight || 1.0, number: globalNodeCounter++ }
-                  });
+                  
+                  if (item.label === 'Color Palette' || item.label === 'Palette') {
+                     // Parse hex codes from value
+                     const hexes = typeof item.value === 'string' ? (item.value.match(/#[0-9a-fA-F]{6}/g) || []) : [];
+                     newNodes.push({
+                        id: nodeId,
+                        type: 'paletteNode',
+                        position: { x: currentX, y: currentY },
+                        data: { colors: hexes, number: globalNodeCounter++ }
+                     });
+                  } else {
+                     const presets = NODE_PRESETS[item.label] || [];
+                     const flatPresets = presets.reduce((acc: string[], curr: PresetItem) => {
+                       if (typeof curr === 'string') {
+                         acc.push(curr);
+                       } else {
+                         acc.push(...curr.items);
+                       }
+                       return acc;
+                     }, []);
+                     const preset = flatPresets.includes(item.value) ? item.value : (item.value ? 'Custom' : 'None');
+                     newNodes.push({
+                        id: nodeId,
+                        type: 'component',
+                        position: { x: currentX, y: currentY },
+                        data: { label: item.label, value: item.value, preset, weight: item.weight || 1.0, number: globalNodeCounter++ }
+                     });
+                  }
                   currentY += 120;
                 });
             } else {
@@ -378,22 +408,32 @@ export default function App() {
                 Object.keys(payload).forEach((key, index) => {
                    if (payload[key]) {
                       const nodeId = `mcp_gen_${index}_${Date.now()}`;
-                      const presets = NODE_PRESETS[key] || [];
-                      const flatPresets = presets.reduce((acc: string[], curr: PresetItem) => {
-                        if (typeof curr === 'string') {
-                          acc.push(curr);
-                        } else {
-                          acc.push(...curr.items);
-                        }
-                        return acc;
-                      }, []);
-                      const preset = flatPresets.includes(payload[key]) ? payload[key] : (payload[key] ? 'Custom' : 'None');
-                      newNodes.push({
-                         id: nodeId,
-                         type: 'component',
-                         position: { x: currentX, y: currentY },
-                         data: { label: key, value: payload[key], preset, number: globalNodeCounter++ }
-                      });
+                      if (key === 'Color Palette' || key === 'Palette') {
+                         const hexes = typeof payload[key] === 'string' ? (payload[key].match(/#[0-9a-fA-F]{6}/g) || []) : [];
+                         newNodes.push({
+                            id: nodeId,
+                            type: 'paletteNode',
+                            position: { x: currentX, y: currentY },
+                            data: { colors: hexes, number: globalNodeCounter++ }
+                         });
+                      } else {
+                         const presets = NODE_PRESETS[key] || [];
+                         const flatPresets = presets.reduce((acc: string[], curr: PresetItem) => {
+                           if (typeof curr === 'string') {
+                             acc.push(curr);
+                           } else {
+                             acc.push(...curr.items);
+                           }
+                           return acc;
+                         }, []);
+                         const preset = flatPresets.includes(payload[key]) ? payload[key] : (payload[key] ? 'Custom' : 'None');
+                         newNodes.push({
+                            id: nodeId,
+                            type: 'component',
+                            position: { x: currentX, y: currentY },
+                            data: { label: key, value: payload[key], preset, number: globalNodeCounter++ }
+                         });
+                      }
                       currentY += 120;
                    }
                 });
