@@ -1,5 +1,5 @@
 import React from 'react';
-import { Merge, Camera, Palette, LayoutGrid } from 'lucide-react';
+import { Merge, Camera, Palette, LayoutGrid, Send, LayoutTemplate } from 'lucide-react';
 
 export function Sidebar() {
   const onDragStart = (event: React.DragEvent, nodeType: string, label: string, value: string) => {
@@ -19,7 +19,26 @@ export function Sidebar() {
           Drag components onto the canvas to build your prompt pipeline.
         </div>
 
-        <h3 className="library-title mt-2">Tools</h3>
+        <div className="library-section mb-6">
+          <div 
+            className="library-item flex items-center gap-2"
+            draggable
+            onDragStart={(event) => onDragStart(event, 'outputNode', 'Final Prompt', '')}
+          >
+            <Send className="w-4 h-4 text-blue-400" />
+            <span className="font-medium text-sm">Final Prompt</span>
+          </div>
+
+          <div 
+            className="library-item flex items-center gap-2"
+            draggable
+            onDragStart={(event) => onDragStart(event, 'vectorOutputNode', 'Vector Output', '')}
+          >
+            <LayoutTemplate className="w-4 h-4 text-emerald-400" />
+            <span className="font-medium text-sm">Vector Output</span>
+          </div>
+        </div>
+
         <div className="library-section mb-6">
           <div 
             className="library-item flex items-center gap-2"

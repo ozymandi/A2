@@ -6,6 +6,7 @@ import { WebSocketServer } from "ws";
 import http from "http";
 import cors from "cors";
 import fs from "fs";
+import { Client } from "@gradio/client";
 const HTTP_PORT = 3001;
 
 // --- Web/WebSocket Server Setup ---
@@ -468,9 +469,88 @@ Prompt:
         res.status(500).json({ error: error.message });
     }
 });
+app.post('/api/generate-vector', async (req, res) => {
+    logToFile(`[HTTP] POST /api/generate-vector called.`);
+    try {
+        const { text, engine } = req.body;
+        if (!text) return res.status(400).json({ error: "No text provided" });
 
+        if (engine === 'huggingface') {
+            logToFile(`[HTTP] HuggingFace engine selected.`);
+            return res.status(501).json({ error: "HuggingFace API for VectorFusion is currently unavailable. Please use ComfyUI (Local)." });
+        }
 
+        if (engine === 'comfy') {
+            const workflowPath = path.join(__dirname, 'vector_workflow.json');
+            if (!fs.existsSync(workflowPath)) {
+                return res.status(404).json({ error: "vector_workflow.json not found in backend folder. Please save your API workflow from ComfyUI first." });
+            }
 
+            let workflowStr = fs.readFileSync(workflowPath, 'utf-8');
+            if (!workflowStr.includes("{PROMPT}")) {
+                return res.status(400).json({ error: "Could not find {PROMPT} placeholder in your vector_workflow.json. Please put {PROMPT} in the text input node of your workflow before saving." });
+            }
+            
+            const safeText = text.replace(/"/g, '\\"').replace(/\n/g, '\\n');
+            workflowStr = workflowStr.replace(/\{PROMPT\}/g, safeText);
+
+            const workflowData = JSON.parse(workflowStr);
+            logToFile(`[HTTP] Sending workflow to ComfyUI...`);
+            const comfyRes = await fetch('http://127.0.0.1:8188/prompt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: workflowData })
+            });
+
+            if (!comfyRes.ok) {
+                const errText = await comfyRes.text();
+                throw new Error(`ComfyUI error: ${errText}`);
+            }
+
+            const promptRes = await comfyRes.json();
+            const promptId = promptRes.prompt_id;
+            logToFile(`[HTTP] ComfyUI accepted prompt with ID: ${promptId}`);
+
+            let outputSvg = null;
+            let attempts = 0;
+            while (attempts < 60 && !outputSvg) {
+                await new Promise(r => setTimeout(r, 1000));
+                attempts++;
+                
+                const histRes = await fetch(`http://127.0.0.1:8188/history/${promptId}`);
+                const histData = await histRes.json();
+                
+                if (histData[promptId]) {
+                    const outputs = histData[promptId].outputs;
+                    logToFile(`[HTTP] ComfyUI job finished. Analyzing outputs...`);
+                    for (const nodeId in outputs) {
+                        const nodeOut = outputs[nodeId];
+                        if (nodeOut.text && nodeOut.text.length > 0) {
+                            const textOutput = nodeOut.text.join('\n');
+                            if (textOutput.includes('<svg')) {
+                                outputSvg = textOutput;
+                                break;
+                            }
+                        }
+                    }
+                    if (!outputSvg) {
+                         throw new Error("ComfyUI job finished, but couldn't extract SVG text. Ensure your workflow has a 'Save Text' node that outputs the raw SVG string.");
+                    }
+                }
+            }
+
+            if (!outputSvg) {
+                throw new Error("ComfyUI job timed out after 60 seconds.");
+            }
+
+            logToFile(`[HTTP] /api/generate-vector Success.`);
+            res.json({ svg: outputSvg });
+        }
+    } catch (error) {
+        logToFile(`[HTTP] /api/generate-vector catch Exception: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
 import path from "path";
 import { fileURLToPath } from "url";
 

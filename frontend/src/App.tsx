@@ -23,6 +23,7 @@ import { ImageVisionNode } from './nodes/ImageVisionNode';
 import { MixerNode } from './nodes/MixerNode';
 import { PaletteNode } from './nodes/PaletteNode';
 import { GridNode } from './nodes/GridNode';
+import { VectorOutputNode } from './nodes/VectorOutputNode';
 import { Sidebar } from './Sidebar';
 import { useUndoRedo } from './hooks/useUndoRedo';
 
@@ -34,6 +35,7 @@ const nodeTypes = {
   mixerNode: MixerNode,
   paletteNode: PaletteNode,
   gridNode: GridNode,
+  vectorOutputNode: VectorOutputNode,
 };
 
 const initialNodes: Node[] = [
