@@ -219,10 +219,31 @@ app.post('/api/optimize-prompt', async (req, res) => {
             systemPrompt += " Use Stable Diffusion tag-based syntax (comma separated). Order by importance: Subject, Environment, Lighting, Style, Quality tags.";
         } else if (engine === "DALL-E") {
             systemPrompt += " Write a highly descriptive, natural language paragraph. Avoid technical camera terms if they don't make sense, focus on the visual scene.";
+        } else if (engine === "Ideogram") {
+            systemPrompt += " Focus heavily on structured components: high-level description, style, and compositional elements with bounding boxes if requested.";
         }
 
         if (format === "JSON") {
-            systemPrompt += `\n\nYou MUST return the result EXACTLY as a valid JSON object. Do not wrap it in markdown code blocks. The JSON must follow this schema:
+            if (engine === "Ideogram") {
+                systemPrompt += `\n\nYou MUST return the result EXACTLY as a valid JSON object. Do not wrap it in markdown code blocks. The JSON must strictly follow the Ideogram 4 caption schema:
+{
+  "high_level_description": "A one-sentence summary of the entire image",
+  "style_description": {
+    "aesthetics": "Keywords about mood/vibe",
+    "lighting": "Lighting details",
+    "art_style": "If non-photographic, put the style here (otherwise use 'photo')",
+    "medium": "The medium, e.g. illustration, photograph",
+    "color_palette": ["#hex1", "#hex2"]
+  },
+  "compositional_deconstruction": {
+    "background": "Background description",
+    "elements": [
+      {"type": "obj", "bbox": [0, 0, 1000, 1000], "desc": "Detailed description of object or subject"}
+    ]
+  }
+}`;
+            } else {
+                systemPrompt += `\n\nYou MUST return the result EXACTLY as a valid JSON object. Do not wrap it in markdown code blocks. The JSON must follow this schema:
 {
   "subject": "Main subject description",
   "environment": "Background and setting",
@@ -231,6 +252,7 @@ app.post('/api/optimize-prompt', async (req, res) => {
   "camera": "Camera angles or properties (if applicable)",
   "full_prompt": "The complete, concatenated prompt string ready for the generator"
 }`;
+            }
         } else {
             systemPrompt += "\n\nReturn ONLY the optimized prompt string without any conversational filler or explanations.";
         }
@@ -286,20 +308,22 @@ app.post('/api/decompile-image', async (req, res) => {
 If there is a person in the image, you MUST try to determine their Age, Gender, and Race (Ethnicity) and include them as separate nodes.
 Also include the Aspect Ratio of the image (e.g. 16:9, 1:1, 9:16, 4:3, etc).
 You MUST output EXACTLY a valid JSON array of objects, with no markdown code blocks, no intro, no outro.
-Schema (include Age, Gender, Race ONLY if a person is present):
-[
-  { "label": "Subject", "value": "..." },
-  { "label": "Age", "value": "..." },
-  { "label": "Gender", "value": "..." },
-  { "label": "Race", "value": "..." },
-  { "label": "Environment", "value": "..." },
-  { "label": "Lighting", "value": "..." },
-  { "label": "Style", "value": "..." },
-  { "label": "Camera", "value": "..." },
-  { "label": "Color Palette", "value": "#hex1, #hex2, #hex3, #hex4, #hex5" },
-  { "label": "Aspect Ratio", "value": "..." },
-  { "label": "Composition Grid", "value": "A detailed layout description to be parsed as a grid. E.g. Header at top 100% width, Subject centered 50% width." }
-]` },
+  Schema (include Age, Gender, Race ONLY if a person is present):
+  [
+    { "label": "Subject", "value": "..." },
+    { "label": "Age", "value": "..." },
+    { "label": "Gender", "value": "..." },
+    { "label": "Race", "value": "..." },
+    { "label": "Environment", "value": "..." },
+    { "label": "Lighting", "value": "..." },
+    { "label": "Style", "value": "..." },
+    { "label": "Aesthetics", "value": "Keywords about mood/vibe" },
+    { "label": "Camera", "value": "..." },
+    { "label": "Color Palette", "value": "#hex1, #hex2, #hex3, #hex4, #hex5" },
+    { "label": "Aspect Ratio", "value": "..." },
+    { "label": "Elements", "value": "Detailed breakdown of objects with bounding boxes. E.g. [0, 0, 1000, 1000]: Main subject description" },
+    { "label": "Composition Grid", "value": "A detailed layout description to be parsed as a grid. E.g. Header at top 100% width, Subject centered 50% width." }
+  ]` },
                             { type: "image_url", image_url: { url: image } }
                         ]
                     }
@@ -525,8 +549,20 @@ app.post('/api/generate-vector', async (req, res) => {
                     logToFile(`[HTTP] ComfyUI job finished. Analyzing outputs...`);
                     for (const nodeId in outputs) {
                         const nodeOut = outputs[nodeId];
+                        
+                        // Fallback 1: Custom node that outputs the path to the saved file
+                        if (nodeOut.path) {
+                            // comfyUI might wrap it in an array or return as raw string depending on the custom node
+                            const filePath = Array.isArray(nodeOut.path) ? nodeOut.path[0] : nodeOut.path;
+                            if (typeof filePath === 'string' && filePath.endsWith('.svg') && fs.existsSync(filePath)) {
+                                outputSvg = fs.readFileSync(filePath, 'utf-8');
+                                break;
+                            }
+                        }
+
+                        // Fallback 2: Text preview node that outputs raw SVG text
                         if (nodeOut.text && nodeOut.text.length > 0) {
-                            const textOutput = nodeOut.text.join('\n');
+                            const textOutput = Array.isArray(nodeOut.text) ? nodeOut.text.join('\n') : nodeOut.text;
                             if (textOutput.includes('<svg')) {
                                 outputSvg = textOutput;
                                 break;
@@ -601,7 +637,7 @@ const mcp = new McpServer({
 
 mcp.tool(
     "render_pipeline",
-    "Decompiles an image into distinct prompt builder nodes. You MUST split the image description into highly detailed logical categories (nodes). CRITICAL INSTRUCTIONS: 1. For characters, deeply analyze and extract specific skin tones, textures, facial features, and clothing materials into a 'Subject' or 'Character' node. 2. You MUST create dedicated nodes for 'Style' (art medium), 'Color Palette' (specific hues/shades), and 'Lighting' (direction/quality). 3. Assign a weight (0.1 to 2.0) to emphasize prominent features.",
+    "Decompiles an image into distinct prompt builder nodes. You MUST split the image description into highly detailed logical categories (nodes). CRITICAL INSTRUCTIONS: 1. For characters, deeply analyze and extract specific skin tones, textures, facial features, and clothing materials into a 'Subject' or 'Character' node. 2. You MUST create dedicated nodes for 'Style' (art medium), 'Aesthetics' (mood/vibe), 'Color Palette' (specific hues/shades), and 'Lighting' (direction/quality). 3. Extract 'Elements' with bounding boxes [x, y, w, h] representing specific objects in the scene. 4. Assign a weight (0.1 to 2.0) to emphasize prominent features.",
     {
         nodes: z.array(
             z.object({

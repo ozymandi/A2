@@ -8,6 +8,8 @@ const ENGINES = [
   "Stable Diffusion", 
   "DALL-E", 
   "Veo", 
+  "Sora",
+  "Ideogram",
   "Nano banana", 
   "GPT Image", 
   "Flux", 

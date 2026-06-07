@@ -25,7 +25,7 @@ export function Sidebar() {
             draggable
             onDragStart={(event) => onDragStart(event, 'outputNode', 'Final Prompt', '')}
           >
-            <Send className="w-4 h-4 text-blue-400" />
+            <Send className="w-4 h-4 text-white/70" />
             <span className="font-medium text-sm">Final Prompt</span>
           </div>
 
@@ -34,7 +34,7 @@ export function Sidebar() {
             draggable
             onDragStart={(event) => onDragStart(event, 'vectorOutputNode', 'Vector Output', '')}
           >
-            <LayoutTemplate className="w-4 h-4 text-emerald-400" />
+            <LayoutTemplate className="w-4 h-4 text-white/70" />
             <span className="font-medium text-sm">Vector Output</span>
           </div>
         </div>

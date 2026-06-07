@@ -637,3 +637,239 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
     at listenInCluster (node:net:2065:12)
     at node:net:2274:7
     at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:01:46.624Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:01:47.226Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:03:07.322Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-22T16:03:08.050Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T16:03:46.015Z: [HTTP] POST /api/refine called. Label: "Custom", Value: "sexual porno act"
+2026-05-22T16:03:46.730Z: [HTTP] /api/refine Success. Full response: {"id":"chatcmpl-wya9vqoaf5zzt7q2vs1gm","object":"chat.completion","created":1779465826,"model":"gemma-4-31b-unc","choices":[{"index":0,"message":{"role":"assistant","content":"I cannot fulfill this request. I am programmed to be a helpful and harmless AI assistant. My safety guidelines prohibit me from generating or enhancing content that describes sexually explicit acts or pornography.","reasoning_content":"","tool_calls":[]},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":73,"completion_tokens":37,"total_tokens":110,"completion_tokens_details":{"reasoning_tokens":0}},"stats":{},"system_fingerprint":"gemma-4-31b-unc"}
+2026-05-22T16:04:07.869Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:04:28.942Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:05:23.202Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:08:45.095Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-22T16:09:00.162Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T16:09:05.896Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:09:07.827Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-22T16:09:24.529Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T16:11:38.364Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T16:12:00.657Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject - Woman","value":"A young woman with fair skin and light brown hair, featuring large natural breasts. She is wearing a tight, olive green spandex bodysuit. Her expression is focused and intimate as she performs fellatio. One leg is raised high, showcasing the curve of her hip and thigh. High detail on skin texture and fabric tension.","weight":1.8},{"label":"Subject - Man","value":"A fit man with fair skin and a well-groomed dark beard and stubble. He is completely nude, lying back against a gray upholstered headboard. His posture is relaxed, experiencing pleasure. Detailed depiction of male anatomy, including a large, erect penis.","weight":1.8},{"label":"Action/Scene","value":"Explicit oral sex scene in a bedroom. The woman is positioned between the man's legs, actively engaging in fellatio. The composition captures the intimacy and physical connection, with a focus on the interaction between the mouth and the genitals.","weight":2},{"label":"Setting","value":"A modern bedroom. The couple is on a bed with crisp white linens. Behind them is a tall, gray fabric upholstered headboard. The environment is clean and minimalist.","weight":1.2},{"label":"Lighting","value":"Soft, diffused natural indoor lighting, creating gentle shadows and highlighting the contours of the bodies. Bright ambient light that emphasizes the realism of the skin and textures.","weight":1.3},{"label":"Color Palette","value":"A contrast between the muted gray of the headboard and the bright white of the sheets, punctuated by the deep olive green of the woman's bodysuit and warm, natural flesh tones.","weight":1.1},{"label":"Style","value":"Hyper-realistic photography, high resolution, raw footage style, sharp focus, 8k, photorealistic, capturing fine details like skin pores and fabric weave.","weight":1.5},{"label":"Camera/Composition","value":"Medium close-up shot, slightly elevated angle, framing the couple from the waist up and including the man's thighs and the woman's raised leg to create a dynamic and explicit composition.","weight":1.2}]}
+2026-05-22T16:12:00.665Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-05-22T16:12:00.668Z: [MCP] Forwarded payload to main UI server successfully.
+2026-05-22T16:12:00.668Z: [MCP] Tool 'render_pipeline' finished execution
+2026-05-22T16:12:30.268Z: [HTTP] POST /api/generate-palette called.
+2026-05-22T16:12:56.142Z: [HTTP] /api/generate-palette raw content: ["#FDF5E6", "#D4A5A5", "#A3B18A", "#7C9082", "#4A5D68"]
+2026-05-22T16:12:56.152Z: [HTTP] /api/generate-palette parsed hexes: ["#FDF5E6","#D4A5A5","#A3B18A","#7C9082","#4A5D68"]
+2026-05-22T16:12:56.152Z: [HTTP] /api/generate-palette Success.
+2026-05-22T16:13:00.585Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-05-22T16:13:23.507Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T16:25:17.919Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-22T21:44:45.609Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T21:44:46.229Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T21:45:21.299Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T21:46:20.764Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T21:47:37.947Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T21:49:59.773Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T21:59:58.583Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:00:15.275Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:03:00.205Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:08:00.301Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:10:19.225Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:12:22.345Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:13:57.340Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:17:52.548Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:17:53.193Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:24:47.761Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-05-22T22:25:41.546Z: [HTTP] POST /api/analyze-image called.
+2026-05-22T22:25:55.109Z: [HTTP] /api/analyze-image Success.
+2026-05-22T22:26:10.040Z: [HTTP] POST /api/analyze-image called.
+2026-05-22T22:26:23.479Z: [HTTP] /api/analyze-image Success.
+2026-05-22T22:27:13.510Z: [HTTP] POST /api/analyze-image called.
+2026-05-22T22:27:29.975Z: [HTTP] /api/analyze-image Success.
+2026-05-22T22:27:32.004Z: [HTTP] POST /api/decompile-image called.
+2026-05-22T22:27:49.930Z: [HTTP] /api/decompile-image Success. Broadcasted 11 nodes.
+2026-05-22T22:28:32.286Z: [HTTP] POST /api/optimize-prompt called for engine: Midjourney, format: Plain Text
+2026-05-22T22:28:53.068Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T22:29:08.010Z: [HTTP] POST /api/optimize-prompt called for engine: Midjourney, format: JSON
+2026-05-22T22:29:42.188Z: [HTTP] /api/optimize-prompt Success.
+2026-05-22T23:03:10.342Z: [MCP] stdin ended. Shutting down.
+2026-05-23T19:40:38.872Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-05-23T19:41:18.411Z: [HTTP] POST /api/analyze-image called.
+2026-05-23T19:41:33.805Z: [HTTP] /api/analyze-image Success.
+2026-05-23T19:41:41.957Z: [HTTP] POST /api/optimize-prompt called for engine: Flux, format: Plain Text
+2026-05-23T19:41:56.031Z: [HTTP] /api/optimize-prompt Success.
+2026-05-23T19:58:02.911Z: [HTTP] POST /api/decompile-image called.
+2026-05-23T19:58:03.004Z: [HTTP] /api/decompile-image LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-05-23T19:58:03.005Z: [HTTP] /api/decompile-image catch Exception: LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-06-03T13:35:47.578Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-03T13:37:43.784Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-03T13:37:44.446Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-03T13:38:06.177Z: [HTTP] POST /api/analyze-image called.
+2026-06-03T13:38:21.617Z: [HTTP] /api/analyze-image Success.
+2026-06-03T13:38:23.661Z: [HTTP] POST /api/decompile-image called.
+2026-06-03T13:38:38.852Z: [HTTP] /api/decompile-image Success. Broadcasted 11 nodes.
+2026-06-03T13:39:01.823Z: [HTTP] POST /api/optimize-prompt called for engine: Midjourney, format: Plain Text
+2026-06-03T13:39:25.039Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T14:49:14.224Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-07T14:50:38.188Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-07T14:50:38.812Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-07T15:03:49.793Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-07T15:08:33.658Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T15:08:55.051Z: [HTTP] /api/analyze-image Success.
+2026-06-07T15:08:57.522Z: [HTTP] POST /api/decompile-image called.
+2026-06-07T15:09:19.028Z: [HTTP] /api/decompile-image Success. Broadcasted 8 nodes.
+2026-06-07T15:09:25.372Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T15:09:56.118Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T15:10:51.474Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-07T15:11:09.887Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-07T15:13:41.848Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T15:14:23.609Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T15:17:41.238Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T15:17:59.695Z: [HTTP] /api/analyze-image Success.
+2026-06-07T15:18:07.727Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T15:18:30.237Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T17:28:55.933Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T17:29:08.530Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T17:31:26.227Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T17:31:26.233Z: [HTTP] /api/optimize-prompt LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-06-07T17:31:26.233Z: [HTTP] /api/optimize-prompt catch Exception: LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-06-07T17:31:49.081Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T17:31:57.165Z: [HTTP] POST /api/refine called. Label: "Custom", Value: "red circle on white and title 'Срака Мотига' in center of circle with vertical letter positioning"
+2026-06-07T17:32:13.307Z: [HTTP] /api/refine Success. Full response: {"id":"chatcmpl-2jorcqoph5okfs8jtojnq","object":"chat.completion","created":1780853517,"model":"google/gemma-4-31b","choices":[{"index":0,"message":{"role":"assistant","content":"A professional minimalist vector logo featuring a bold crimson red circle centered on a pristine, stark white background. In the exact center of the circle, the text \"Срака Мотига\" is rendered in a clean, modern sans-serif typeface, with characters arranged in a precise vertical stack (top-to-bottom positioning). High contrast, symmetrical composition, sharp edges, 8k resolution, graphic design aesthetic.","reasoning_content":"\n*   Input prompt fragment: \"red circle on white and title 'Срака Мотига' in center of circle with vertical letter positioning\"\n    *   Goal: Enhance/refine to be more professional, descriptive, and vivid for an image generator (like Midjourney, DALL-E 3, or Stable Diffusion).\n    *   Key elements: Red circle, white background, text \"Срака Мотига\", centered, vertical letter positioning.\n\n    *   \"Red circle on white\": Too simple. Needs texture, lighting, and precise placement (minimalist, graphic design style).\n    *   \"Title 'Срака Мотига'\": needs font descriptions (typography), weight, and stylistic integration.\n    *   \"Center of circle\": Standard positioning.\n    *   \"Vertical letter positioning\": This is the tricky part. Does it mean stacked letters or rotated text? Usually implies vertical typography (stacked).\n\n    *   *Style:* Minimalist logo, vector art, graphic design, high contrast.\n    *   *Circle:* Crimson red, bold, perfect geometry, clean edges.\n    *   *Background:* Pure stark white, studio lighting, flat design.\n    *   *Typography:* Modern sans-serif or elegant serif, vertical orientation (stacked characters), crisp lettering, centered perfectly.\n\n    *   *Option 1 (Technical/Clean):* A minimalist graphic logo featuring a bold crimson red circle centered on a pristine white background. In the center of the circle, the text 'Срака Мотига' is written in a clean, modern typeface with vertical letter stacking, ensuring precise alignment and high contrast.\n    *   *Option 2 (Vivid/Artistic):* A professional vector design of a vibrant scarlet red disc against a stark, seamless white backdrop. Centered within the disc is the title 'Срака Мотига' rendered in bold, crisp typography with characters arranged vertically from top to bottom, creating a balanced and symmetrical composition.\n\n    The user wants the refined text *directly*. I should provide a version that balances technical precision (for AI) and descriptive richness.","tool_calls":[]},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":94,"completion_tokens":535,"total_tokens":629,"completion_tokens_details":{"reasoning_tokens":447}},"stats":{},"system_fingerprint":"google/gemma-4-31b"}
+2026-06-07T17:32:16.639Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T17:32:36.594Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T17:33:00.482Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T17:50:20.484Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T17:50:38.832Z: [HTTP] /api/analyze-image Success.
+2026-06-07T17:51:01.589Z: [HTTP] POST /api/decompile-image called.
+2026-06-07T17:51:30.633Z: [HTTP] /api/decompile-image Success. Broadcasted 10 nodes.
+2026-06-07T17:51:38.226Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T17:52:12.693Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T18:21:33.591Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T18:25:11.965Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T18:26:26.463Z: [HTTP] /api/analyze-image LM Studio Error: undefined
+2026-06-07T18:26:26.464Z: [HTTP] /api/analyze-image catch Exception: LM Studio Error: undefined
+2026-06-07T18:26:26.465Z: [HTTP] /api/analyze-image LM Studio Error: undefined
+2026-06-07T18:26:26.465Z: [HTTP] /api/analyze-image catch Exception: LM Studio Error: undefined
+2026-06-07T19:11:34.820Z: [HTTP] POST /api/refine called. Label: "Custom", Value: "logo - japanese antiques shop, rich bg (come up with brief for name, industry, target audience and mood, chose combination/wordmark/icon as needed)
+"
+2026-06-07T19:11:58.115Z: [HTTP] /api/refine Success. Full response: {"id":"chatcmpl-aff5raykfnjozfgg97dxmk","object":"chat.completion","created":1780859494,"model":"nvidia/nemotron-3-nano-omni","choices":[{"index":0,"message":{"role":"assistant","content":"\n**Logo Concept – Japanese Antiques Boutique**  \nName: **Koi Heritage** (or “Nihon Relics”)  \nIndustry: Luxury vintage & antique goods retailer specializing in authentic Japanese artifacts, furniture, and art.  \nTarget Audience: Affluent collectors, interior designers, and connoisseurs of traditional Japanese culture who value heritage and exclusivity.  \nMood & Atmosphere: Serene elegance with an understated mystique—evoking timeless craftsmanship, quiet reverence, and refined sophistication.  \nDesign Approach: A harmonious combination mark featuring a sleek, minimalist wordmark in elegant Japanese‑style serif typography, complemented by a subtle, stylized koi fish or sakura blossom icon that weaves through the lettering. Set against a rich, deep indigo silk‑textured background to convey depth and heritage while allowing the logo’s details to stand out with luminous clarity.","reasoning_content":"We need to output refined text. The task is to enhance and refine a specific characteristic of an image prompt: \"logo - japanese antiques shop, rich bg (come up with brief for name, industry, target audience and mood, chose combination/wordmark/icon as needed)\". So we need a more professional, descriptive, vivid description, including brief for name, industry, target audience, mood, and choose combination/wordmark/icon. We'll produce something like:\n\n\"Logo design for an upscale Japanese antiquarian boutique named 'Koi Heritage', operating in the luxury vintage goods sector, targeting affluent collectors and connoisseurs of traditional Japanese artifacts. Mood: serene elegance with a hint of mystique. Use a refined wordmark combined with a subtle sakura blossom icon integrated into the lettering, set against a deep indigo silk-textured background.\"\n\nMake it concise but descriptive. Return refined text directly.\n","tool_calls":[]},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":105,"completion_tokens":392,"total_tokens":497,"completion_tokens_details":{"reasoning_tokens":187}},"stats":{},"system_fingerprint":"nvidia/nemotron-3-nano-omni"}
+2026-06-07T19:13:47.309Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T19:15:19.049Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T19:19:58.646Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T19:20:15.834Z: [HTTP] /api/analyze-image Success.
+2026-06-07T19:20:18.438Z: [HTTP] POST /api/decompile-image called.
+2026-06-07T19:20:41.254Z: [HTTP] /api/decompile-image Success. Broadcasted 10 nodes.
+2026-06-07T19:21:05.303Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T19:21:25.916Z: [HTTP] /api/optimize-prompt Success.
