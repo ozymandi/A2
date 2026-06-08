@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, ActivityIndicator } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import LoginScreen from './src/screens/LoginScreen';
 import BuilderScreen from './src/screens/BuilderScreen';
@@ -50,46 +51,48 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="light" />
-      <Stack.Navigator
-        id="RootStack"
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.colors.card,
-          },
-          headerTintColor: theme.colors.text,
-          headerTitleStyle: { fontWeight: 'bold' },
-        }}
-      >
-        {!isAuthenticated ? (
-          <Stack.Screen 
-            name="Login" 
-            component={LoginScreen} 
-            options={{ headerShown: false }}
-            initialParams={{ onLoginSuccess: handleLoginSuccess }}
-          />
-        ) : (
-          <Stack.Group>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <StatusBar style="light" />
+        <Stack.Navigator
+          id="RootStack"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: theme.colors.card,
+            },
+            headerTintColor: theme.colors.text,
+            headerTitleStyle: { fontWeight: 'bold' },
+          }}
+        >
+          {!isAuthenticated ? (
             <Stack.Screen 
-              name="Builder" 
-              component={BuilderScreen} 
-              options={{ title: 'Prompt Builder' }}
+              name="Login" 
+              component={LoginScreen} 
+              options={{ headerShown: false }}
+              initialParams={{ onLoginSuccess: handleLoginSuccess }}
             />
-            <Stack.Screen 
-              name="Settings" 
-              component={SettingsScreen} 
-              options={{ title: 'Settings' }}
-              initialParams={{ onLogoutSuccess: handleLogoutSuccess }}
-            />
-            <Stack.Screen 
-              name="ModelSelector" 
-              component={ModelSelectorScreen} 
-              options={{ title: 'Select Model', presentation: 'modal' }}
-            />
-          </Stack.Group>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+          ) : (
+            <Stack.Group>
+              <Stack.Screen 
+                name="Builder" 
+                component={BuilderScreen} 
+                options={{ title: 'Prompt Builder' }}
+              />
+              <Stack.Screen 
+                name="Settings" 
+                component={SettingsScreen} 
+                options={{ title: 'Settings' }}
+                initialParams={{ onLogoutSuccess: handleLogoutSuccess }}
+              />
+              <Stack.Screen 
+                name="ModelSelector" 
+                component={ModelSelectorScreen} 
+                options={{ title: 'Select Model', presentation: 'modal' }}
+              />
+            </Stack.Group>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
