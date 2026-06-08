@@ -3,8 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import ErrorBoundary from 'react-native-error-boundary';
 
 import LoginScreen from './src/screens/LoginScreen';
 import BuilderScreen from './src/screens/BuilderScreen';
@@ -13,6 +14,22 @@ import ModelSelectorScreen from './src/screens/ModelSelectorScreen';
 import { theme } from './src/constants/theme';
 
 const Stack = createNativeStackNavigator();
+
+const CustomFallback = (props: { error: Error, resetError: Function }) => (
+  <SafeAreaProvider>
+    <View style={{ flex: 1, backgroundColor: '#000', padding: 20, justifyContent: 'center' }}>
+      <Text style={{ color: 'red', fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>APP CRASHED</Text>
+      <ScrollView style={{ flex: 1 }}>
+        <Text style={{ color: '#fff', fontSize: 12, fontFamily: 'monospace' }}>
+          {props.error.toString()}
+        </Text>
+        <Text style={{ color: '#aaa', fontSize: 10, fontFamily: 'monospace', marginTop: 10 }}>
+          {props.error.componentStack}
+        </Text>
+      </ScrollView>
+    </View>
+  </SafeAreaProvider>
+);
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -51,48 +68,50 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <StatusBar style="light" />
-        <Stack.Navigator
-          id="RootStack"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: theme.colors.card,
-            },
-            headerTintColor: theme.colors.text,
-            headerTitleStyle: { fontWeight: 'bold' },
-          }}
-        >
-          {!isAuthenticated ? (
-            <Stack.Screen 
-              name="Login" 
-              component={LoginScreen} 
-              options={{ headerShown: false }}
-              initialParams={{ onLoginSuccess: handleLoginSuccess }}
-            />
-          ) : (
-            <Stack.Group>
+    <ErrorBoundary FallbackComponent={CustomFallback}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <StatusBar style="light" />
+          <Stack.Navigator
+            id="RootStack"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: theme.colors.card,
+              },
+              headerTintColor: theme.colors.text,
+              headerTitleStyle: { fontWeight: 'bold' },
+            }}
+          >
+            {!isAuthenticated ? (
               <Stack.Screen 
-                name="Builder" 
-                component={BuilderScreen} 
-                options={{ title: 'Prompt Builder' }}
+                name="Login" 
+                component={LoginScreen} 
+                options={{ headerShown: false }}
+                initialParams={{ onLoginSuccess: handleLoginSuccess }}
               />
-              <Stack.Screen 
-                name="Settings" 
-                component={SettingsScreen} 
-                options={{ title: 'Settings' }}
-                initialParams={{ onLogoutSuccess: handleLogoutSuccess }}
-              />
-              <Stack.Screen 
-                name="ModelSelector" 
-                component={ModelSelectorScreen} 
-                options={{ title: 'Select Model', presentation: 'modal' }}
-              />
-            </Stack.Group>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+            ) : (
+              <Stack.Group>
+                <Stack.Screen 
+                  name="Builder" 
+                  component={BuilderScreen} 
+                  options={{ title: 'Prompt Builder' }}
+                />
+                <Stack.Screen 
+                  name="Settings" 
+                  component={SettingsScreen} 
+                  options={{ title: 'Settings' }}
+                  initialParams={{ onLogoutSuccess: handleLogoutSuccess }}
+                />
+                <Stack.Screen 
+                  name="ModelSelector" 
+                  component={ModelSelectorScreen} 
+                  options={{ title: 'Select Model', presentation: 'modal' }}
+                />
+              </Stack.Group>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </ErrorBoundary>
   );
 }
