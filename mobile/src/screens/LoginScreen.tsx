@@ -63,7 +63,7 @@ export default function LoginScreen({ navigation, route }: any) {
         Alert.alert('Error', 'Play services not available or outdated.');
       } else {
         // Developer error (likely missing or wrong Client ID)
-        if (WEB_CLIENT_ID === 'YOUR_WEB_CLIENT_ID') {
+        if (WEB_CLIENT_ID === ('YOUR_WEB_CLIENT_ID' as string)) {
           Alert.alert(
             'Configuration Needed',
             'Please update the WEB_CLIENT_ID in LoginScreen.tsx to your actual Google Cloud Web Client ID.'
