@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Clipboard } from 'react-native';
 import { Palette, RefreshCw, Copy, Download, Trash2 } from 'lucide-react-native';
-import * as FileSystem from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { PromptBlock as IPromptBlock, generatePalette } from '../services/llmService';
 import { theme } from '../constants/theme';
