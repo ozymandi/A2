@@ -11,20 +11,7 @@ import { theme } from '../constants/theme';
 import { Sparkles } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Safe import for Expo Go (Fully mocked to prevent Expo Go crash)
-let GoogleSignin: any = {
-  configure: () => {},
-  hasPlayServices: async () => true,
-  signIn: async () => { throw new Error('Native module not linked'); },
-  signOut: async () => {},
-};
-let statusCodes: any = {
-  SIGN_IN_CANCELLED: '1',
-  IN_PROGRESS: '2',
-  PLAY_SERVICES_NOT_AVAILABLE: '3'
-};
-
-// The native module import is fully removed to prevent Metro cache issues
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 // Use the actual Web Client ID from Google Cloud Console
 const WEB_CLIENT_ID = '1096782583182-11m0pj9e55s527lc8tsfdnp39uojs11o.apps.googleusercontent.com';
