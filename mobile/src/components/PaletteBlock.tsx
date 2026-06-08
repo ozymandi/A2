@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, Clipboard } from 'react-native';
 import { Palette, RefreshCw, Copy, Download, Trash2 } from 'lucide-react-native';
-import * as FileSystem from 'expo-file-system';
+import { cacheDirectory, writeAsStringAsync, EncodingType } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { PromptBlock as IPromptBlock, generatePalette } from '../services/llmService';
 import { theme } from '../constants/theme';
@@ -129,9 +129,9 @@ export default function PaletteBlock({ block, allBlocks, onChange, onRemove }: P
     if (colors.length === 0) return;
     try {
       const base64 = generateAseBase64(colors);
-      const fileUri = `${FileSystem.cacheDirectory}palette.ase`;
-      await FileSystem.writeAsStringAsync(fileUri, base64, {
-        encoding: FileSystem.EncodingType.Base64,
+      const fileUri = `${cacheDirectory}palette.ase`;
+      await writeAsStringAsync(fileUri, base64, {
+        encoding: EncodingType.Base64,
       });
 
       const isAvailable = await Sharing.isAvailableAsync();

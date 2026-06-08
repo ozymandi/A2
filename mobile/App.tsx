@@ -53,6 +53,7 @@ export default function App() {
     <NavigationContainer>
       <StatusBar style="light" />
       <Stack.Navigator
+        id="RootStack"
         screenOptions={{
           headerStyle: {
             backgroundColor: theme.colors.card,
