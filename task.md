@@ -44,7 +44,7 @@ Node-based конструктор промптів для AI-генератор�
 - `backend/index.js` — схема декомпіляції та опис MCP-інструмента доповнені записом "Camera Angle" зі структурованим значенням.
 - Перевірено в браузері: створення ноди, обертання сфери, пресети, вивід тексту у Final Prompt, створення ноди через WebSocket з тестового payload. Декомпіляція реального зображення через LM Studio не перевірялась.
 
-**Очікує від дизайнера:** 9 фото для пресетів. Покласти у `frontend/public/camera-angles/` з іменами `eye-level`, `close-up`, `low-angle`, `high-angle`, `birds-eye`, `left-side`, `right-side`, `back-view`, `dutch-angle` (webp або jpg), після чого прописати шляхи в полі `image` пресетів у `cameraAngle.ts`.
+**Фото пресетів (2026-09-26):** дизайнер надав 9 PNG у `assets/camera angle pic/` (1254 px, разом ~17 МБ, є `PROMPTS.md` з промптами генерації). Зменшені до 176 px WebP (2–6 КБ кожна) у `frontend/public/camera-angles/`, шляхи прописані в полі `image` пресетів у `cameraAngle.ts`. Оригінали в `assets/` не комітяться в git через розмір.
 
 ## Наступний крок
 

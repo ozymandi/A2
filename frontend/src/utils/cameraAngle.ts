@@ -33,16 +33,19 @@ export const ZOOM_LABELS: Record<ZoomLevel, string> = {
   close: 'Close-up',
 };
 
+// Preview thumbnails live in frontend/public/camera-angles/ (source PNGs: assets/camera angle pic/)
+const PRESET_IMG = (slug: string) => `/camera-angles/${slug}.webp`;
+
 export const CAMERA_ANGLE_PRESETS: CameraAnglePreset[] = [
-  { name: 'Eye Level',   hAngle: 0,    vAngle: 0,   roll: 0,  zoom: 'medium' },
-  { name: 'Close-up',    hAngle: 0,    vAngle: 0,   roll: 0,  zoom: 'close' },
-  { name: 'Low Angle',   hAngle: 0,    vAngle: -40, roll: 0,  zoom: 'medium' },
-  { name: 'High Angle',  hAngle: 0,    vAngle: 45,  roll: 0,  zoom: 'medium' },
-  { name: "Bird's Eye",  hAngle: 0,    vAngle: 85,  roll: 0,  zoom: 'long' },
-  { name: 'Left Side',   hAngle: -90,  vAngle: 0,   roll: 0,  zoom: 'medium' },
-  { name: 'Right Side',  hAngle: 90,   vAngle: 0,   roll: 0,  zoom: 'medium' },
-  { name: 'Back View',   hAngle: 180,  vAngle: 10,  roll: 0,  zoom: 'medium' },
-  { name: 'Dutch Angle', hAngle: 20,   vAngle: -10, roll: 25, zoom: 'medium' },
+  { name: 'Eye Level',   hAngle: 0,    vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('eye-level') },
+  { name: 'Close-up',    hAngle: 0,    vAngle: 0,   roll: 0,  zoom: 'close',  image: PRESET_IMG('close-up') },
+  { name: 'Low Angle',   hAngle: 0,    vAngle: -40, roll: 0,  zoom: 'medium', image: PRESET_IMG('low-angle') },
+  { name: 'High Angle',  hAngle: 0,    vAngle: 45,  roll: 0,  zoom: 'medium', image: PRESET_IMG('high-angle') },
+  { name: "Bird's Eye",  hAngle: 0,    vAngle: 85,  roll: 0,  zoom: 'long',   image: PRESET_IMG('birds-eye') },
+  { name: 'Left Side',   hAngle: -90,  vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('left-side') },
+  { name: 'Right Side',  hAngle: 90,   vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('right-side') },
+  { name: 'Back View',   hAngle: 180,  vAngle: 10,  roll: 0,  zoom: 'medium', image: PRESET_IMG('back-view') },
+  { name: 'Dutch Angle', hAngle: 20,   vAngle: -10, roll: 25, zoom: 'medium', image: PRESET_IMG('dutch-angle') },
 ];
 
 // ---------- normalisation ----------
