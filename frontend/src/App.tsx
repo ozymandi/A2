@@ -232,7 +232,14 @@ export default function App() {
             const flow = JSON.parse(event.target?.result as string);
             if (flow && flow.nodes && flow.edges) {
               setNodes(flow.nodes || []);
-              setEdges(flow.edges || []);
+              // Graphs saved before the duplicate-edge fix may contain repeated edge ids
+              const seenEdgeIds = new Set<string>();
+              const uniqueEdges = (flow.edges || []).filter((e: Edge) => {
+                if (seenEdgeIds.has(e.id)) return false;
+                seenEdgeIds.add(e.id);
+                return true;
+              });
+              setEdges(uniqueEdges);
               
               const maxId = flow.nodes.reduce((max: number, node: any) => {
                 if (node.data && node.data.number) {
@@ -514,9 +521,15 @@ export default function App() {
                   finalEdges.push({ id: `e_${node.id}_${targetOutputId}`, source: node.id, target: targetOutputId });
                 });
 
-                // Update edges with the fresh node IDs
+                // Update edges with the fresh node IDs.
+                // Idempotent on purpose: this runs inside a setNodes updater, which React StrictMode
+                // invokes twice in dev. Skipping ids that already exist prevents duplicate edges
+                // (duplicate React keys leave orphan SVG paths behind after Clear).
                 setEdges((eds) => {
-                  const combinedEdges = [...eds, ...finalEdges];
+                  const existingIds = new Set(eds.map(e => e.id));
+                  const fresh = finalEdges.filter(e => !existingIds.has(e.id));
+                  if (fresh.length === 0) return eds;
+                  const combinedEdges = [...eds, ...fresh];
                   console.log("Updated edges:", combinedEdges);
                   return combinedEdges;
                 });

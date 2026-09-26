@@ -65,7 +65,7 @@ Node-based конструктор промптів для AI-генератор�
 - `backend/mcp_debug.log` і кореневий `mcp_debug.log` відстежуються git і постійно змінюються, тому статус завжди «modified». Варто додати в `.gitignore`.
 - Адреса бекенду `127.0.0.1:3001` захардкоджена в кожній ноді фронтенду; у `VectorOutputNode.tsx` використовується `localhost` замість `127.0.0.1`.
 - Пресети дубльовані: `frontend/src/constants/presets.ts` і `mobile/src/constants/presets.ts`.
-- `App.tsx`, обробник `render_pipeline`: `setEdges` викликається всередині updater-функції `setNodes`, через що в dev-режимі (StrictMode) ребра створюються двічі і текст у Final Prompt дублюється. Виявлено 2026-09-26 під час тесту, не виправлялось.
+- ~~`App.tsx`, обробник `render_pipeline`: ребра створювались двічі в dev-режимі (StrictMode), текст у Final Prompt дублювався, а після Clear лишались «сирітські» SVG-ребра через дубльовані React key.~~ Виправлено 2026-09-26: `setEdges` у `render_pipeline` пропускає ребра з уже наявними id; `onLoad` прибирає дублікати з JSON, збережених до фіксу.
 
 ## Відкриті питання до клієнта
 
