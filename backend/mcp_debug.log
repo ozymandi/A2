@@ -873,3 +873,153 @@ The scene captures a cinematic high-altitude aerial drone perspective with a wid
 2026-06-07T19:20:41.254Z: [HTTP] /api/decompile-image Success. Broadcasted 10 nodes.
 2026-06-07T19:21:05.303Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
 2026-06-07T19:21:25.916Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T19:46:33.475Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T19:46:54.260Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T21:17:39.395Z: [HTTP] POST /api/analyze-image called.
+2026-06-07T21:17:54.216Z: [HTTP] /api/analyze-image Success.
+2026-06-07T21:18:05.653Z: [HTTP] POST /api/decompile-image called.
+2026-06-07T21:18:25.225Z: [HTTP] /api/decompile-image Success. Broadcasted 13 nodes.
+2026-06-07T21:19:15.567Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-07T21:19:43.950Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T23:10:10.085Z: [HTTP] POST /api/refine called. Label: "Custom", Value: "SUBJECT: a young goth woman with blank, all-black eyes, full body, bloody floor. On knee"
+2026-06-07T23:10:10.089Z: [HTTP] /api/refine LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-06-07T23:10:10.090Z: [HTTP] /api/refine catch Exception: LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-06-07T23:10:28.456Z: [HTTP] POST /api/refine called. Label: "Custom", Value: "SUBJECT: a young goth woman with blank, all-black eyes, full body, bloody floor. On knee"
+2026-06-07T23:12:35.810Z: [HTTP] /api/refine LM Studio Error: undefined
+2026-06-07T23:12:35.810Z: [HTTP] /api/refine catch Exception: LM Studio Error: undefined
+2026-06-07T23:12:57.535Z: [HTTP] POST /api/refine called. Label: "Custom", Value: "a young goth woman with blank, all-black eyes, full body, bloody floor. On knee"
+2026-06-07T23:13:08.180Z: [HTTP] /api/refine Success. Full response: {"id":"chatcmpl-vnrrqrhyom1y0x7ehym7v","object":"chat.completion","created":1780873977,"model":"google/gemma-4-31b","choices":[{"index":0,"message":{"role":"assistant","content":"A full-body cinematic portrait of a young woman in ornate gothic attire, kneeling poignantly on a cold, reflective floor drenched in viscous crimson blood. Her gaze is haunting, featuring pitch-black obsidian eyes with no visible pupils or sclera, creating an abyssal void. The scene is illuminated by dramatic chiaroscuro lighting, emphasizing the contrast between her pale alabaster skin and the deep blacks of her lace and velvet garments, captured in hyper-realistic detail with a macabre, atmospheric mood.","reasoning_content":"\n*   Current Prompt: \"a young goth woman with blank, all-black eyes, full body, bloody floor. On knee\"\n    *   Goal: Enhance it to be professional, descriptive, and vivid.\n    *   Role: Expert prompt engineering assistant.\n    *   Constraint: Return the refined text directly.\n\n    *   Subject: Young goth woman.\n    *   Key Feature: Blank, all-black eyes (void/sclera).\n    *   Composition: Full body, kneeling position (\"On knee\").\n    *   Environment: Bloody floor.\n\n    *   *Goth Woman:* Elaborate on the aesthetic (Victorian goth, cyberpunk goth, traditional goth), clothing (lace, velvet, leather), makeup (pale skin, dark lipstick).\n    *   *Black Eyes:* Use words like \"void,\" \"obsidian,\" \"pitch-black sclera,\" \"bottomless.\"\n    *   *Kneeling/Composition:* Describe the pose as \"poignant,\" \"despairing,\" or \"menacing.\" Mention camera angle (eye-level, high angle).\n    *   *Bloody Floor:* Use words like \"viscous crimson pools,\" \"splattered,\" \"macabre,\" \"reflective surfaces.\"\n    *   *Atmosphere/Lighting:* Cinematic lighting, moody, chiaroscuro, atmospheric fog, dramatic shadows.\n\n    *   *Option 1 (Cinematic/Horror):* A full-body cinematic shot of a young woman in ornate gothic attire, kneeling on a cold stone floor drenched in viscous crimson blood. Her eyes are haunting, completely void of color—pitch-black obsidian sclera with no pupils. High contrast lighting, macabre atmosphere, hyper-realistic textures, 8k resolution.\n    *   *Option 2 (Artistic/Moody):* A poignant full-body composition featuring a young gothic woman kneeling amidst a pool of deep red blood. She possesses striking, all-black void eyes that consume her gaze. Dressed in intricate black lace and velvet, set against a dark, moody backdrop with dramatic chiaroscuro lighting highlighting the reflective blood on the floor.\n    *   *Option 3 (Dark Fantasy):* A haunting full-body portrait of a young goth woman in a state of despair, kneeling on a blood-splattered marble floor. Her eyes are unsettlingly blank and entirely black, reflecting an abyss. Intricate gothic fashion, pale alabaster skin, cinematic atmospheric fog, hyper-detailed textures, dark surrealism.\n\n    The user wants it \"professional, descriptive, and vivid.\" A blend of these elements works best for modern AI generators (Midjourney/Stable Diffusion).","tool_calls":[]},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":92,"completion_tokens":660,"total_tokens":752,"completion_tokens_details":{"reasoning_tokens":555}},"stats":{},"system_fingerprint":"google/gemma-4-31b"}
+2026-06-07T23:13:13.698Z: [HTTP] POST /api/optimize-prompt called for engine: Z _image, format: Plain Text
+2026-06-07T23:13:22.924Z: [HTTP] /api/optimize-prompt Success.
+2026-06-07T23:14:07.841Z: [MCP] stdin ended. Shutting down.
+2026-06-07T23:14:07.843Z: [MCP] stdin closed. Shutting down.
+2026-06-08T08:56:38.773Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-08T08:56:39.349Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-09T10:30:35.620Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-06-09T10:31:14.743Z: [HTTP] POST /api/analyze-image called.
+2026-06-09T10:31:14.750Z: [HTTP] /api/analyze-image catch Exception: fetch failed
+2026-06-09T10:31:29.708Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-09T10:31:30.229Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-06-09T10:34:03.234Z: [HTTP] POST /api/analyze-image called.
+2026-06-09T10:34:18.695Z: [HTTP] /api/analyze-image Success.
+2026-06-09T10:34:32.889Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-09T10:34:55.447Z: [HTTP] /api/optimize-prompt Success.
+2026-06-09T10:52:02.733Z: [HTTP] POST /api/analyze-image called.
+2026-06-09T10:52:26.858Z: [HTTP] /api/analyze-image Success.
+2026-06-09T10:52:35.627Z: [HTTP] POST /api/decompile-image called.
+2026-06-09T10:52:59.637Z: [HTTP] /api/decompile-image Success. Broadcasted 10 nodes.
+2026-06-09T10:55:46.162Z: [HTTP] POST /api/optimize-prompt called for engine: Ideogram, format: JSON
+2026-06-09T10:56:42.690Z: [HTTP] /api/optimize-prompt Success.
+2026-06-09T11:20:04.030Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: JSON
+2026-06-09T11:20:04.043Z: [HTTP] /api/optimize-prompt LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-06-09T11:20:04.043Z: [HTTP] /api/optimize-prompt catch Exception: LM Studio Error: No models loaded. Please load a model in the developer page or use the 'lms load' command.
+2026-09-06T21:02:41.869Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-06T21:05:29.277Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-06T21:05:40.903Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-06T21:05:53.380Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-06T21:09:07.716Z: [MCP] Tool 'render_pipeline' called with params: {"nodes":[{"label":"Subject","value":"Two men facing each other in a dimly lit setting. Left man: dark wavy hair, beard, black leather jacket over black shirt. Right man: bald, muscular, tattoo of a crescent moon and swirl on left arm, wearing a black vest with fur collar. Background: brick wall with warm, low lighting.","weight":1.5},{"label":"Style","value":"Cinematic film still, dramatic lighting, gritty texture.","weight":1},{"label":"Aesthetics","value":"Tense, confrontational, suspenseful mood, masculine, rugged aesthetic.","weight":1},{"label":"Color Palette","value":"Dominant warm amber tones from lighting, deep shadows, muted browns and blacks.","weight":1},{"label":"Lighting","value":"Directional side lighting from the left, creating strong highlights and deep shadows, low-key lighting with high contrast.","weight":1}]}
+2026-09-06T21:09:07.824Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-09-06T21:09:07.829Z: [MCP] Forwarded payload to main UI server successfully.
+2026-09-06T21:09:07.829Z: [MCP] Tool 'render_pipeline' finished execution
+2026-09-06T21:12:13.819Z: [HTTP] POST /api/analyze-image called.
+2026-09-06T21:12:13.859Z: [HTTP] /api/analyze-image LM Studio Error: The provided messages contain images, but gemma-4-31b-unc does not support image inputs.
+2026-09-06T21:12:13.859Z: [HTTP] /api/analyze-image catch Exception: LM Studio Error: The provided messages contain images, but gemma-4-31b-unc does not support image inputs.
+2026-09-06T21:12:19.584Z: [HTTP] POST /api/analyze-image called.
+2026-09-06T21:12:19.598Z: [HTTP] /api/analyze-image LM Studio Error: The provided messages contain images, but gemma-4-31b-unc does not support image inputs.
+2026-09-06T21:12:19.598Z: [HTTP] /api/analyze-image catch Exception: LM Studio Error: The provided messages contain images, but gemma-4-31b-unc does not support image inputs.
+2026-09-06T21:13:38.511Z: [HTTP] POST /api/analyze-image called.
+2026-09-06T21:13:52.663Z: [HTTP] /api/analyze-image Success.
+2026-09-06T21:14:01.368Z: [HTTP] POST /api/decompile-image called.
+2026-09-06T21:14:20.293Z: [HTTP] /api/decompile-image Success. Broadcasted 13 nodes.
+2026-09-06T21:15:32.620Z: [HTTP] POST /api/refine called. Label: "Race", Value: "German"
+2026-09-06T21:15:39.992Z: [HTTP] /api/refine Success. Full response: {"id":"chatcmpl-2izpv466n74pga6b4xyaea","object":"chat.completion","created":1788729332,"model":"google/gemma-4-31b","choices":[{"index":0,"message":{"role":"assistant","content":"Distinct Central European features with a fair porcelain complexion, sharp facial contours, high cheekbones, and striking blue or grey eyes.","reasoning_content":"*   Role: Expert prompt engineering assistant.\n    *   Goal: Enhance/refine a specific characteristic of an image prompt.\n    *   Input Characteristic: \"German\" (under 'Race' - though technically ethnicity/nationality).\n    *   Output Requirement: Return the refined text directly.\n\n    *   *Generic:* German.\n    *   *Professional/Descriptive:* Needs to describe physical traits associated with Central European/Germanic phenotypes without being stereotypical, focusing on visual markers that an AI (like Midjourney or Stable Diffusion) can translate into a high-quality image.\n\n    *   Skin tone: Fair, porcelain, pale.\n    *   Hair: Blonde, ash blonde, light brown, structured.\n    *   Eyes: Blue, green, grey.\n    *   Features: Strong jawline, high cheekbones, distinct nasal bridge.\n    *   Vibe: European, Central European, Germanic.\n\n    *   *Option 1 (Simple):* \"A person of German descent with fair skin and light-colored eyes.\" (Too basic).\n    *   *Option 2 (Detailed):* \"Central European features, characterized by a pale porcelain complexion, striking blue or grey eyes, and fine blonde hair.\" (Better).\n    *   *Option 3 (Professional Prompt Style):* \"Distinct Central European Germanic phenotype, featuring fair luminous skin, sharp facial contours, high cheekbones, and clear blue eyes.\" (Very professional).\n\n    The user wants a refined version of \"German\" for an image prompt. The most effective way to do this is to describe the *visuals* rather than just using the nationality label, as AI models respond better to descriptive traits.\n\n    *Draft:* \"Distinct Central European features with a fair porcelain complexion, sharp facial contours, and striking blue or grey eyes.\"","tool_calls":[]},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":73,"completion_tokens":413,"total_tokens":486,"completion_tokens_details":{"reasoning_tokens":383}},"stats":{},"system_fingerprint":"google/gemma-4-31b"}
+2026-09-06T21:15:43.593Z: [HTTP] POST /api/optimize-prompt called for engine: GPT Image, format: Plain Text
+2026-09-06T21:16:12.472Z: [HTTP] /api/optimize-prompt Success.
+2026-09-06T22:00:36.157Z: [HTTP] POST /api/optimize-prompt called for engine: Midjourney, format: Plain Text
+2026-09-06T22:00:47.330Z: [HTTP] /api/optimize-prompt Success.
+2026-09-06T22:01:18.713Z: [HTTP] POST /api/optimize-prompt called for engine: Midjourney, format: Plain Text
+2026-09-06T22:01:32.427Z: [HTTP] /api/optimize-prompt Success.
+2026-09-25T09:46:45.778Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-25T09:46:46.461Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-26T13:31:12.269Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-26T13:31:23.784Z: [HTTP] /api/mcp-forward received payload. Broadcasting to undefined clients.
+2026-09-26T13:39:27.472Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-26T13:42:49.952Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T13:42:50.792Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T13:44:08.847Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T13:44:09.620Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T13:46:31.585Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T13:46:35.815Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T13:49:42.934Z: [HTTP] /api/decompile-image LM Studio Error: undefined
+2026-09-26T13:49:42.934Z: [HTTP] /api/decompile-image catch Exception: LM Studio Error: undefined
+2026-09-26T13:49:54.756Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T13:50:41.915Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T13:51:08.346Z: [HTTP] /api/decompile-image Success. Broadcasted 14 nodes.
+2026-09-26T13:53:11.775Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T13:53:36.520Z: [HTTP] /api/decompile-image Success. Broadcasted 14 nodes.
+2026-09-26T13:55:41.135Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T13:56:00.073Z: [HTTP] /api/decompile-image Success. Broadcasted 14 nodes.
+2026-09-26T14:04:31.788Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T14:04:58.804Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T14:05:21.935Z: [HTTP] /api/decompile-image Success. Broadcasted 14 nodes.
+2026-09-26T14:05:40.108Z: [HTTP] POST /api/analyze-image called.
+2026-09-26T14:05:55.008Z: [HTTP] /api/analyze-image Success.
+2026-09-26T14:06:02.881Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T14:06:26.671Z: [HTTP] POST /api/analyze-image called.
+2026-09-26T14:06:38.800Z: [HTTP] /api/analyze-image Success.
+2026-09-26T14:09:25.164Z: UNCAUGHT EXCEPTION: Error: listen EADDRINUSE: address already in use 127.0.0.1:3001
+    at Server.setupListenHandle [as _listen2] (node:net:2008:16)
+    at listenInCluster (node:net:2065:12)
+    at node:net:2274:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+2026-09-26T14:09:49.198Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T14:10:12.427Z: [HTTP] /api/decompile-image Success. Broadcasted 14 nodes.
+2026-09-26T14:12:25.384Z: [HTTP] Server successfully listening on 127.0.0.1:3001
+2026-09-26T14:12:48.614Z: [HTTP] POST /api/decompile-image called.
+2026-09-26T14:13:11.491Z: [HTTP] /api/decompile-image Camera Angle raw value: {"horizontal":"left","vertical":"eye","roll":0,"zoom":"medium"}
+2026-09-26T14:13:11.491Z: [HTTP] /api/decompile-image Success. Broadcasted 14 nodes.
+2026-09-26T14:16:35.960Z: [HTTP] Server successfully listening on 127.0.0.1:3001
