@@ -48,6 +48,20 @@ Node-based конструктор промптів для AI-генератор�
 
 **Ітерація 2 (2026-09-26, після тесту декомпіляції з Gemma 4 31B):** нода створювалась, але з кутами 0/0. Зроблено: (1) бекенд логує сире значення Camera Angle у `mcp_debug.log`; (2) формат для LLM змінено з градусів на категорії (horizontal: front / three-quarter-left / left / rear-left / back / rear-right / right / three-quarter-right; vertical: worm / low / eye / high / bird; zoom: long / medium / close), парсер приймає категорії, числа і вільний текст з ключовими словами; (3) виправлено конвенцію сторін під фото MiniMax: «Left Side» = видно лівий бік об'єкта, його фронт дивиться на лівий край кадру (hAngle +90). Перевірено 2026-09-26 після перезапуску бекенду: Gemma 4 31B повернула {horizontal: left, vertical: eye, zoom: medium} для дівчини в профіль, нода створилась з +90°/0°/Medium. Рішення дизайнера: окрему логіку оновлення існуючої ноди Camera Angle при повторному Decompile не робити, декомпілятор створює свою ноду сам. **Задача Camera Angle закрита.**
 
+## Налаштування LM Studio (обов'язково для vision)
+
+Виявлено 2026-09-27. Gemma 4 31B вилітала з `GGML_ASSERT non-causal attention requires n_ubatch >= n_tokens` при декомпіляції великих зображень: візуальний енкодер обробляє всі токени картинки одним блоком, і він має вміститись у Physical Batch Size (n_ubatch). З дефолтним 512 великі зображення ламали модель, LM Studio показував Channel Error і вивантажував її.
+
+Робочі значення для Gemma 4 31B (Load settings → Show advanced settings):
+
+- **Physical Batch Size:** 2048 (ключове)
+- **Evaluation Batch Size:** 2048 (не менше за Physical)
+- Context Length 58890, GPU Offload 60/60, KV cache q8_0. Перевірено, працює.
+
+Nemotron 3 Nano Omni з Evaluation Batch 2048 на тій самій картинці працював одразу.
+
+Запобіжники в коді (запропоновано, чекають рішення): стискати зображення у `ImageVisionNode` до 1024 px перед відправкою; у бекенді читати текст помилки як `data.error.message ?? data.error`, бо зараз алерт показує «LM Studio Error: undefined».
+
 ## Наступний крок
 
 1. Перезапустити workflow «Build Android APK» вручну (або зробити пуш у `mobile-app`), щоб отримати свіжий APK.
@@ -77,5 +91,7 @@ Node-based конструктор промптів для AI-генератор�
 - **Веб-версія на Vercel з безкоштовними vision-LLM** (обговорено 2026-09-26, дизайнер: «поки не треба»). Реалістична схема — BYOK: користувач вставляє свій ключ Groq / Gemini / OpenRouter, як у мобілці; опційно демо-режим через Vercel Function з вашим ключем і лімітом на IP. Free-tier ліміти на один ключ: Groq ~1000/день, Gemini Flash-Lite ~500/день, OpenRouter :free 50/день (1000 після $10). На Vercel не переїдуть WebSocket і MCP-міст з LM Studio, маршрути `/api/*` треба переписати у виклики провайдерів з браузера.
 
 ## Історія сесій
+
+- **2026-09-27** — діагностика вивантаження Gemma 4 у LM Studio при декомпіляції: причина в Physical Batch Size 512, виправлено налаштуванням 2048. Код не змінювався.
 
 - **2026-09-26** — аналіз проєкту, перевірка стану GitHub і CI, створено `task.md` і `team.md`. Реалізовано ноду Camera Angle (десктоп), перевірено в браузері.
