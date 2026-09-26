@@ -308,6 +308,11 @@ app.post('/api/decompile-image', async (req, res) => {
 If there is a person in the image, you MUST try to determine their Age, Gender, and Race (Ethnicity) and include them as separate nodes.
 Also include the Aspect Ratio of the image (e.g. 16:9, 1:1, 9:16, 4:3, etc).
 You MUST output EXACTLY a valid JSON array of objects, with no markdown code blocks, no intro, no outro.
+"Camera" describes the lens/body/optics as text. "Camera Angle" describes WHERE the camera is relative to the main subject and MUST be an object with numeric fields:
+  horizontal: -180..180 (0 = camera directly in front of the subject, positive = camera moved to the viewer's right, +90/-90 = side profile, 180 = behind the subject);
+  vertical: -90..90 (0 = eye level, positive = camera above the subject looking down, 90 = top-down bird's eye, negative = camera below looking up);
+  roll: -45..45 (camera tilt in degrees, 0 = level horizon, non-zero = dutch angle);
+  zoom: one of "long" (full body / wide framing), "medium" (waist up), "close" (face / detail close-up).
   Schema (include Age, Gender, Race ONLY if a person is present):
   [
     { "label": "Subject", "value": "..." },
@@ -319,6 +324,7 @@ You MUST output EXACTLY a valid JSON array of objects, with no markdown code blo
     { "label": "Style", "value": "..." },
     { "label": "Aesthetics", "value": "Keywords about mood/vibe" },
     { "label": "Camera", "value": "..." },
+    { "label": "Camera Angle", "value": { "horizontal": 0, "vertical": 0, "roll": 0, "zoom": "medium" } },
     { "label": "Color Palette", "value": "#hex1, #hex2, #hex3, #hex4, #hex5" },
     { "label": "Aspect Ratio", "value": "..." },
     { "label": "Elements", "value": "Detailed breakdown of objects with bounding boxes. E.g. [0, 0, 1000, 1000]: Main subject description" },
@@ -637,7 +643,7 @@ const mcp = new McpServer({
 
 mcp.tool(
     "render_pipeline",
-    "Decompiles an image into distinct prompt builder nodes. You MUST split the image description into highly detailed logical categories (nodes). CRITICAL INSTRUCTIONS: 1. For characters, deeply analyze and extract specific skin tones, textures, facial features, and clothing materials into a 'Subject' or 'Character' node. 2. You MUST create dedicated nodes for 'Style' (art medium), 'Aesthetics' (mood/vibe), 'Color Palette' (specific hues/shades), and 'Lighting' (direction/quality). 3. Extract 'Elements' with bounding boxes [x, y, w, h] representing specific objects in the scene. 4. Assign a weight (0.1 to 2.0) to emphasize prominent features.",
+    "Decompiles an image into distinct prompt builder nodes. You MUST split the image description into highly detailed logical categories (nodes). CRITICAL INSTRUCTIONS: 1. For characters, deeply analyze and extract specific skin tones, textures, facial features, and clothing materials into a 'Subject' or 'Character' node. 2. You MUST create dedicated nodes for 'Style' (art medium), 'Aesthetics' (mood/vibe), 'Color Palette' (specific hues/shades), and 'Lighting' (direction/quality). 3. Extract 'Elements' with bounding boxes [x, y, w, h] representing specific objects in the scene. 4. Assign a weight (0.1 to 2.0) to emphasize prominent features. 5. Add a 'Camera Angle' node whose value is a JSON string like {\"horizontal\": 0, \"vertical\": 0, \"roll\": 0, \"zoom\": \"medium\"} (horizontal -180..180, 0 = in front, positive = viewer's right, 180 = behind; vertical -90..90, positive = above looking down; roll -45..45 tilt; zoom = long | medium | close).",
     {
         nodes: z.array(
             z.object({

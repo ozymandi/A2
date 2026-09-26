@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { Download, RefreshCw, Wand2, Cloud, Server, LayoutTemplate } from 'lucide-react';
+import { Download, RefreshCw, Cloud, Server, LayoutTemplate } from 'lucide-react';
 import axios from 'axios';
 
 export function VectorOutputNode({ data, isConnectable }: any) {

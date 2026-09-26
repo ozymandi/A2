@@ -24,6 +24,8 @@ import { MixerNode } from './nodes/MixerNode';
 import { PaletteNode } from './nodes/PaletteNode';
 import { GridNode } from './nodes/GridNode';
 import { VectorOutputNode } from './nodes/VectorOutputNode';
+import { CameraAngleNode } from './nodes/CameraAngleNode';
+import { cameraAngleToPrompt, normalizeCameraAngle, parseCameraAngleValue } from './utils/cameraAngle';
 import { Sidebar } from './Sidebar';
 import { useUndoRedo } from './hooks/useUndoRedo';
 
@@ -36,6 +38,7 @@ const nodeTypes = {
   paletteNode: PaletteNode,
   gridNode: GridNode,
   vectorOutputNode: VectorOutputNode,
+  cameraAngleNode: CameraAngleNode,
 };
 
 const initialNodes: Node[] = [
@@ -189,7 +192,7 @@ export default function App() {
         id: getId(),
         type,
         position,
-        data: { label, value, number: type === 'component' ? globalNodeCounter++ : undefined },
+        data: { label, value, number: (type === 'component' || type === 'cameraAngleNode') ? globalNodeCounter++ : undefined },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -276,6 +279,10 @@ export default function App() {
           const weight = (node.data?.weight as number) ?? 1.0;
           ownText = weight !== 1.0 ? `(${node.data.value}:${weight.toFixed(1)})` : String(node.data.value);
         }
+      } else if (node.type === 'cameraAngleNode') {
+        const text = cameraAngleToPrompt(normalizeCameraAngle(node.data));
+        const weight = (node.data?.weight as number) ?? 1.0;
+        ownText = weight !== 1.0 ? `(${text}:${weight.toFixed(1)})` : text;
       } else if (node.type === 'imageVisionNode') {
         ownText = node.data?.text as string || '';
       } else if (node.type === 'mixerNode') {
@@ -402,6 +409,14 @@ export default function App() {
                         position: { x: currentX, y: currentY },
                         data: { rects, incomingText: item.value }
                      });
+                  } else if (item.label === 'Camera Angle') {
+                     const angle = parseCameraAngleValue(item.value);
+                     newNodes.push({
+                        id: nodeId,
+                        type: 'cameraAngleNode',
+                        position: { x: currentX, y: currentY },
+                        data: { ...angle, weight: item.weight || 1.0, number: globalNodeCounter++ }
+                     });
                   } else {
                      const presets = NODE_PRESETS[item.label] || [];
                      const flatPresets = presets.reduce((acc: string[], curr: PresetItem) => {
@@ -451,6 +466,14 @@ export default function App() {
                             type: 'gridNode',
                             position: { x: currentX, y: currentY },
                             data: { rects, incomingText: payload[key] }
+                         });
+                      } else if (key === 'Camera Angle') {
+                         const angle = parseCameraAngleValue(payload[key]);
+                         newNodes.push({
+                            id: nodeId,
+                            type: 'cameraAngleNode',
+                            position: { x: currentX, y: currentY },
+                            data: { ...angle, number: globalNodeCounter++ }
                          });
                       } else {
                          const presets = NODE_PRESETS[key] || [];

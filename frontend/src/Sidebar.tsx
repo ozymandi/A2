@@ -1,5 +1,5 @@
 import React from 'react';
-import { Merge, Camera, Palette, LayoutGrid, Send, LayoutTemplate } from 'lucide-react';
+import { Merge, Camera, Palette, LayoutGrid, Send, LayoutTemplate, Orbit } from 'lucide-react';
 
 export function Sidebar() {
   const onDragStart = (event: React.DragEvent, nodeType: string, label: string, value: string) => {
@@ -74,6 +74,15 @@ export function Sidebar() {
           >
             <LayoutGrid className="w-4 h-4 text-white/70" />
             <span className="font-medium text-sm">Composition Grid</span>
+          </div>
+
+          <div
+            className="library-item flex items-center gap-2"
+            draggable
+            onDragStart={(event) => onDragStart(event, 'cameraAngleNode', 'Camera Angle', '')}
+          >
+            <Orbit className="w-4 h-4 text-white/70" />
+            <span className="font-medium text-sm">Camera Angle</span>
           </div>
         </div>
         
