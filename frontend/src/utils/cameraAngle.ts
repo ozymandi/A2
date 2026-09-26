@@ -2,7 +2,9 @@
 //
 // Conventions:
 //   hAngle  -180..180  horizontal orbit. 0 = camera in front of the subject,
-//                      positive = camera moves to the viewer's right, ±90 = side profile, ±180 = behind.
+//                      positive = camera moves to the SUBJECT'S LEFT side (the subject's front then points
+//                      to the left edge of the frame), +90 = left side profile, -90 = right side profile,
+//                      ±180 = behind. Matches the MiniMax "Left Side" / "Right Side" preset pictures.
 //   vAngle   -90..90   vertical orbit. 0 = eye level, positive = camera above (looking down),
 //                      negative = camera below (looking up).
 //   roll     -45..45   camera tilt around its optical axis (Dutch angle).
@@ -42,8 +44,8 @@ export const CAMERA_ANGLE_PRESETS: CameraAnglePreset[] = [
   { name: 'Low Angle',   hAngle: 0,    vAngle: -40, roll: 0,  zoom: 'medium', image: PRESET_IMG('low-angle') },
   { name: 'High Angle',  hAngle: 0,    vAngle: 45,  roll: 0,  zoom: 'medium', image: PRESET_IMG('high-angle') },
   { name: "Bird's Eye",  hAngle: 0,    vAngle: 85,  roll: 0,  zoom: 'long',   image: PRESET_IMG('birds-eye') },
-  { name: 'Left Side',   hAngle: -90,  vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('left-side') },
-  { name: 'Right Side',  hAngle: 90,   vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('right-side') },
+  { name: 'Left Side',   hAngle: 90,   vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('left-side') },
+  { name: 'Right Side',  hAngle: -90,  vAngle: 0,   roll: 0,  zoom: 'medium', image: PRESET_IMG('right-side') },
   { name: 'Back View',   hAngle: 180,  vAngle: 10,  roll: 0,  zoom: 'medium', image: PRESET_IMG('back-view') },
   { name: 'Dutch Angle', hAngle: 20,   vAngle: -10, roll: 25, zoom: 'medium', image: PRESET_IMG('dutch-angle') },
 ];
@@ -65,8 +67,8 @@ const toNumber = (v: unknown, fallback: number) => {
 
 const toZoom = (v: unknown): ZoomLevel => {
   const s = String(v ?? '').toLowerCase();
-  if (s.startsWith('long') || s.includes('wide') || s.includes('full')) return 'long';
-  if (s.startsWith('close')) return 'close';
+  if (/close|macro|extreme|detail|face-only|portrait-crop/.test(s)) return 'close';
+  if (/\blong\b|wide|full[- ]body|full[- ]shot|establishing|far/.test(s)) return 'long';
   return 'medium';
 };
 
@@ -84,9 +86,103 @@ export function isSameAngle(a: CameraAngleValue, b: CameraAngleValue): boolean {
   return a.hAngle === b.hAngle && a.vAngle === b.vAngle && a.roll === b.roll && a.zoom === b.zoom;
 }
 
+// ---------- categorical vocabulary (what we ask the LLM to return) ----------
+
+/** Horizontal categories → hAngle. Order matters for keyword matching (more specific first). */
+export const HORIZONTAL_CATEGORIES: Record<string, number> = {
+  'three-quarter-left': 45,
+  'three-quarter-right': -45,
+  'rear-left': 135,
+  'rear-right': -135,
+  'front': 0,
+  'left': 90,
+  'right': -90,
+  'back': 180,
+};
+
+/** Vertical categories → vAngle. */
+export const VERTICAL_CATEGORIES: Record<string, number> = {
+  'worm': -80,
+  'low': -35,
+  'eye': 0,
+  'high': 40,
+  'bird': 85,
+};
+
+const norm = (s: unknown) => String(s ?? '').toLowerCase().replace(/[\s_]+/g, '-').trim();
+
+/** Resolves a horizontal value that may be a number, a category name, or free text. */
+function resolveHorizontal(v: unknown): number | undefined {
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  const s = norm(v);
+  if (!s) return undefined;
+  const asNumber = parseFloat(s);
+  if (Number.isFinite(asNumber) && /^-?\d+(\.\d+)?°?$/.test(s)) return asNumber;
+  if (s in HORIZONTAL_CATEGORIES) return HORIZONTAL_CATEGORIES[s];
+  return horizontalFromText(s);
+}
+
+/** Resolves a vertical value that may be a number, a category name, or free text. */
+function resolveVertical(v: unknown): number | undefined {
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  const s = norm(v);
+  if (!s) return undefined;
+  const asNumber = parseFloat(s);
+  if (Number.isFinite(asNumber) && /^-?\d+(\.\d+)?°?$/.test(s)) return asNumber;
+  if (s in VERTICAL_CATEGORIES) return VERTICAL_CATEGORIES[s];
+  return verticalFromText(s);
+}
+
+/** Keyword heuristics for free-text horizontal descriptions. */
+function horizontalFromText(s: string): number | undefined {
+  const left = /\bleft\b/.test(s);
+  const right = /\bright\b/.test(s);
+  if (/\b(back|behind|rear)\b/.test(s)) {
+    if (left) return 135;
+    if (right) return -135;
+    return 180;
+  }
+  if (/three-quarter|3\/4|three-quarters/.test(s)) {
+    if (left) return 45;
+    if (right) return -45;
+    return 45;
+  }
+  if (/\b(profile|side)\b/.test(s) || left || right) {
+    if (left) return 90;
+    if (right) return -90;
+    return 90;
+  }
+  if (/\b(front|frontal|facing|head-on|straight-on)\b/.test(s)) return 0;
+  return undefined;
+}
+
+/** Keyword heuristics for free-text vertical descriptions. */
+function verticalFromText(s: string): number | undefined {
+  if (/worm|extreme-low|ground-level/.test(s)) return -80;
+  if (/bird|top-down|overhead|aerial|drone|above-looking-down|straight-down/.test(s)) return 85;
+  if (/\blow\b|looking-up|from-below|upward/.test(s)) return -35;
+  if (/\bhigh\b|looking-down|from-above|elevated|downward/.test(s)) return 40;
+  if (/eye|level|straight/.test(s)) return 0;
+  return undefined;
+}
+
+function rollFromValue(v: unknown): number {
+  if (typeof v === 'number' && Number.isFinite(v)) return v;
+  const s = norm(v);
+  if (!s) return 0;
+  const n = parseFloat(s);
+  if (Number.isFinite(n)) return n;
+  if (/dutch|tilt|canted|diagonal/.test(s)) return 25;
+  return 0;
+}
+
 /**
  * Parses the "Camera Angle" value coming from the LLM (decompile / MCP).
- * Accepts an object, a JSON string, or a free-text description (matched against preset names).
+ * Accepts:
+ *  - an object with categorical fields  { horizontal: "three-quarter-left", vertical: "eye", zoom: "medium" }
+ *  - an object with numeric fields      { horizontal: 45, vertical: 0, roll: 0, zoom: "medium" }
+ *  - a JSON string of either of the above
+ *  - a free-text description ("low angle three-quarter view from the left, close-up")
  */
 export function parseCameraAngleValue(raw: unknown): CameraAngleValue {
   let obj: any = raw;
@@ -96,24 +192,32 @@ export function parseCameraAngleValue(raw: unknown): CameraAngleValue {
     try {
       obj = JSON.parse(cleaned);
     } catch {
-      // Free text fallback: try to match a preset name inside the text
-      const lower = cleaned.toLowerCase();
-      const preset = CAMERA_ANGLE_PRESETS.find(p => lower.includes(p.name.toLowerCase()));
+      obj = null;
+    }
+    if (!obj || typeof obj !== 'object') {
+      // Free text fallback: exact preset name, otherwise keyword heuristics
+      const s = norm(cleaned);
+      const preset = CAMERA_ANGLE_PRESETS.find(p => norm(p.name) === s);
       if (preset) {
         const { name: _n, image: _i, ...value } = preset;
         return value;
       }
-      return { ...DEFAULT_CAMERA_ANGLE, zoom: toZoom(lower) };
+      return normalizeCameraAngle({
+        hAngle: horizontalFromText(s) ?? 0,
+        vAngle: verticalFromText(s) ?? 0,
+        roll: rollFromValue(s),
+        zoom: toZoom(s),
+      });
     }
   }
 
   if (!obj || typeof obj !== 'object') return { ...DEFAULT_CAMERA_ANGLE };
 
   return normalizeCameraAngle({
-    hAngle: obj.hAngle ?? obj.horizontal ?? obj.horizontalAngle ?? obj.h,
-    vAngle: obj.vAngle ?? obj.vertical ?? obj.verticalAngle ?? obj.v,
-    roll: obj.roll ?? obj.tilt ?? 0,
-    zoom: toZoom(obj.zoom ?? obj.shot ?? obj.framing),
+    hAngle: resolveHorizontal(obj.hAngle ?? obj.horizontal ?? obj.horizontalAngle ?? obj.h ?? obj.azimuth) ?? 0,
+    vAngle: resolveVertical(obj.vAngle ?? obj.vertical ?? obj.verticalAngle ?? obj.v ?? obj.elevation) ?? 0,
+    roll: rollFromValue(obj.roll ?? obj.tilt),
+    zoom: toZoom(obj.zoom ?? obj.shot ?? obj.framing ?? obj.distance),
   });
 }
 
@@ -130,12 +234,13 @@ function verticalTerm(v: number): string {
 }
 
 function horizontalTerm(h: number): string {
-  const side = h < 0 ? 'left' : 'right';
+  // Positive hAngle = the subject's left side faces the camera
+  const side = h > 0 ? 'left' : 'right';
   const a = Math.abs(h);
   if (a < 15) return 'frontal view';
-  if (a < 60) return `three-quarter view from the ${side}`;
+  if (a < 60) return `three-quarter view showing the subject's ${side} side`;
   if (a < 120) return `${side} side profile view`;
-  if (a < 165) return `rear three-quarter view from the ${side}`;
+  if (a < 165) return `rear three-quarter view from the subject's ${side}`;
   return 'back view, seen from behind';
 }
 

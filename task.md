@@ -46,6 +46,8 @@ Node-based конструктор промптів для AI-генератор�
 
 **Фото пресетів (2026-09-26):** дизайнер надав 9 PNG у `assets/camera angle pic/` (1254 px, разом ~17 МБ, є `PROMPTS.md` з промптами генерації). Зменшені до 176 px WebP (2–6 КБ кожна) у `frontend/public/camera-angles/`, шляхи прописані в полі `image` пресетів у `cameraAngle.ts`. Оригінали в `assets/` не комітяться в git через розмір.
 
+**Ітерація 2 (2026-09-26, після тесту декомпіляції з Gemma 4 31B):** нода створювалась, але з кутами 0/0. Зроблено: (1) бекенд логує сире значення Camera Angle у `mcp_debug.log`; (2) формат для LLM змінено з градусів на категорії (horizontal: front / three-quarter-left / left / rear-left / back / rear-right / right / three-quarter-right; vertical: worm / low / eye / high / bird; zoom: long / medium / close), парсер приймає категорії, числа і вільний текст з ключовими словами; (3) виправлено конвенцію сторін під фото MiniMax: «Left Side» = видно лівий бік об'єкта, його фронт дивиться на лівий край кадру (hAngle +90). Потребує перезапуску бекенду і повторного тесту декомпіляції.
+
 ## Наступний крок
 
 1. Перезапустити workflow «Build Android APK» вручну (або зробити пуш у `mobile-app`), щоб отримати свіжий APK.
