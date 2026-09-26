@@ -60,8 +60,8 @@ Return the refined text directly.` }
         const data = await response.json();
         
         if (data.error) {
-            logToFile(`[HTTP] /api/refine LM Studio Error: ${data.error.message}`);
-            throw new Error(`LM Studio Error: ${data.error.message}`);
+            logToFile(`[HTTP] /api/refine LM Studio Error: ${lmErrorMessage(data.error)}`);
+            throw new Error(`LM Studio Error: ${lmErrorMessage(data.error)}`);
         }
         
         if (data.choices && data.choices[0] && data.choices[0].message) {
@@ -100,8 +100,8 @@ ${prompt}` }
         const data = await response.json();
         
         if (data.error) {
-            logToFile(`[HTTP] /api/review LM Studio Error: ${data.error.message}`);
-            throw new Error(`LM Studio Error: ${data.error.message}`);
+            logToFile(`[HTTP] /api/review LM Studio Error: ${lmErrorMessage(data.error)}`);
+            throw new Error(`LM Studio Error: ${lmErrorMessage(data.error)}`);
         }
         
         if (data.choices && data.choices[0] && data.choices[0].message) {
@@ -148,8 +148,8 @@ app.post('/api/analyze-image', async (req, res) => {
         const data = await response.json();
 
         if (data.error) {
-            logToFile(`[HTTP] /api/analyze-image LM Studio Error: ${data.error.message}`);
-            throw new Error(`LM Studio Error: ${data.error.message}`);
+            logToFile(`[HTTP] /api/analyze-image LM Studio Error: ${lmErrorMessage(data.error)}`);
+            throw new Error(`LM Studio Error: ${lmErrorMessage(data.error)}`);
         }
 
         const generated = data.choices[0].message.content.trim();
@@ -188,8 +188,8 @@ app.post('/api/merge-prompts', async (req, res) => {
         const data = await response.json();
 
         if (data.error) {
-            logToFile(`[HTTP] /api/merge-prompts LM Studio Error: ${data.error.message}`);
-            throw new Error(`LM Studio Error: ${data.error.message}`);
+            logToFile(`[HTTP] /api/merge-prompts LM Studio Error: ${lmErrorMessage(data.error)}`);
+            throw new Error(`LM Studio Error: ${lmErrorMessage(data.error)}`);
         }
 
         const generated = data.choices[0].message.content.trim();
@@ -272,8 +272,8 @@ app.post('/api/optimize-prompt', async (req, res) => {
         const data = await response.json();
 
         if (data.error) {
-            logToFile(`[HTTP] /api/optimize-prompt LM Studio Error: ${data.error.message}`);
-            throw new Error(`LM Studio Error: ${data.error.message}`);
+            logToFile(`[HTTP] /api/optimize-prompt LM Studio Error: ${lmErrorMessage(data.error)}`);
+            throw new Error(`LM Studio Error: ${lmErrorMessage(data.error)}`);
         }
 
         const generated = data.choices[0].message.content.trim();
@@ -340,8 +340,8 @@ You MUST output EXACTLY a valid JSON array of objects, with no markdown code blo
         const data = await response.json();
 
         if (data.error) {
-            logToFile(`[HTTP] /api/decompile-image LM Studio Error: ${data.error.message}`);
-            throw new Error(`LM Studio Error: ${data.error.message}`);
+            logToFile(`[HTTP] /api/decompile-image LM Studio Error: ${lmErrorMessage(data.error)}`);
+            throw new Error(`LM Studio Error: ${lmErrorMessage(data.error)}`);
         }
 
         let generated = data.choices[0].message.content.trim();
@@ -352,12 +352,39 @@ You MUST output EXACTLY a valid JSON array of objects, with no markdown code blo
         if (generated.endsWith('```')) generated = generated.slice(0, -3);
         generated = generated.trim();
         
+        // Repair a typical small-model slip: {"label":"X":{...}} → {"label":"X","value":{...}}
+        const repaired = generated.replace(/("label"\s*:\s*"[^"]+")\s*:\s*(\{|\[|")/g, '$1,"value":$2');
+        if (repaired !== generated) {
+            logToFile(`[HTTP] /api/decompile-image Repaired missing "value" key in LLM JSON.`);
+        }
+
         let nodesArray = [];
         try {
-            nodesArray = JSON.parse(generated);
+            nodesArray = JSON.parse(repaired);
         } catch (e) {
-            logToFile(`[HTTP] /api/decompile-image Parse Error: ${e.message} on text: ${generated}`);
-            throw new Error("LLM did not return valid JSON");
+            // Salvage: parse each top-level object on its own, keep the valid ones
+            logToFile(`[HTTP] /api/decompile-image Parse Error: ${e.message}. Trying to salvage individual entries. Text: ${repaired}`);
+            const objectChunks = repaired.match(/\{(?:[^{}]|\{[^{}]*\})*\}/g) || [];
+            const dropped = [];
+            for (const chunk of objectChunks) {
+                try {
+                    const obj = JSON.parse(chunk);
+                    if (obj && typeof obj.label === 'string') nodesArray.push(obj);
+                    else dropped.push(chunk);
+                } catch (inner) {
+                    dropped.push(chunk);
+                }
+            }
+            if (dropped.length > 0) {
+                logToFile(`[HTTP] /api/decompile-image Dropped ${dropped.length} unparseable entr${dropped.length === 1 ? 'y' : 'ies'}: ${dropped.join(' | ')}`);
+            }
+            if (nodesArray.length === 0) {
+                throw new Error("LLM did not return valid JSON");
+            }
+            logToFile(`[HTTP] /api/decompile-image Salvaged ${nodesArray.length} of ${objectChunks.length} entries.`);
+        }
+        if (!Array.isArray(nodesArray)) {
+            throw new Error("LLM did not return a JSON array");
         }
 
         // Debug: log the raw Camera Angle entry so parsing issues can be diagnosed
@@ -603,6 +630,14 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const LOG_FILE = path.join(__dirname, 'mcp_debug.log');
+
+// LM Studio returns errors either as { message } objects or as plain strings
+function lmErrorMessage(err) {
+    if (err == null) return 'unknown error';
+    if (typeof err === 'string') return err;
+    if (typeof err.message === 'string') return err.message;
+    try { return JSON.stringify(err); } catch { return String(err); }
+}
 
 function logToFile(msg) {
     try {

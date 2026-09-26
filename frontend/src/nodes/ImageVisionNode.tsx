@@ -14,12 +14,44 @@ export function ImageVisionNode({ id, data }: any) {
     updateNodeData(id, { text, image });
   }, [text, image, id, updateNodeData]);
 
+  // Downscale before storing: large images produce oversized vision-token blocks that can crash
+  // the local model's image encoder (llama.cpp n_ubatch assert) and bloat the WebSocket payload.
+  const MAX_IMAGE_SIDE = 1024;
+  const JPEG_QUALITY = 0.85;
+
+  const downscaleImage = (dataUrl: string): Promise<string> =>
+    new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const longest = Math.max(img.width, img.height);
+        if (longest <= MAX_IMAGE_SIDE) {
+          resolve(dataUrl);
+          return;
+        }
+        const scale = MAX_IMAGE_SIDE / longest;
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(dataUrl);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const out = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
+        console.log(`[ImageVision] Downscaled ${img.width}x${img.height} -> ${canvas.width}x${canvas.height}, ${Math.round(dataUrl.length / 1024)}KB -> ${Math.round(out.length / 1024)}KB`);
+        resolve(out);
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    });
+
   const handleImageUpload = (file: File) => {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const base64 = e.target?.result as string;
-        setImage(base64);
+        setImage(await downscaleImage(base64));
       };
       reader.readAsDataURL(file);
     }
