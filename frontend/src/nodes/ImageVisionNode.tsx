@@ -6,6 +6,7 @@ export function ImageVisionNode({ id, data }: any) {
   const [image, setImage] = useState<string | null>(data.image || null);
   const [text, setText] = useState(data.text || '');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [imageSize, setImageSize] = useState<{ w: number; h: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { updateNodeData, getNodes } = useReactFlow();
 
@@ -146,10 +147,20 @@ export function ImageVisionNode({ id, data }: any) {
         </div>
       ) : (
         <div className="relative mb-3 group">
-          <img src={image} alt="Preview" className="w-full h-auto max-h-[250px] object-contain bg-black/20 rounded-md border border-border" />
-          <button 
+          <img
+            src={image}
+            alt="Preview"
+            className="w-full h-auto max-h-[250px] object-contain bg-black/20 rounded-md border border-border"
+            onLoad={(e) => setImageSize({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
+          />
+          {imageSize && (
+            <span className="absolute bottom-2 left-2 text-[10px] font-mono text-muted-foreground bg-card/80 border border-border rounded px-1.5 py-0.5 pointer-events-none">
+              {imageSize.w} × {imageSize.h}
+            </span>
+          )}
+          <button
             className="absolute top-2 right-2 bg-destructive text-destructive-foreground p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={() => { setImage(null); setText(''); }}
+            onClick={() => { setImage(null); setText(''); setImageSize(null); }}
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
